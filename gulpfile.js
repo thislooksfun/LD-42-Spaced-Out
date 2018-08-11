@@ -52,14 +52,14 @@ gulp.task("default", ["assets", "html", "less", "javascript"]);
 gulp.task("assets", function() {
   return gulp.src("./assets/**/*")
     .pipe(plumber(log))
-    .pipe(gulp.dest("./docs/assets/"));
+    .pipe(gulp.dest("./build/assets/"));
 });
 
 
 gulp.task("html", function() {
   return gulp.src("./html/**/*")
     .pipe(plumber(log))
-    .pipe(gulp.dest("./docs/"));
+    .pipe(gulp.dest("./buid/"));
 });
 
 
@@ -69,7 +69,7 @@ gulp.task("less", function() {
       paths: [ "./less/main.less" ]
     }))
     .pipe(plumber(log))
-    .pipe(gulp.dest("./docs"));
+    .pipe(gulp.dest("./build/"));
 });
 
 
@@ -92,7 +92,7 @@ gulp.task("javascript", function() {
     .pipe(sourcemaps.init({loadMaps: true}))
     .pipe(uglify())
     .pipe(sourcemaps.write("./"))
-    .pipe(gulp.dest("./docs/"));
+    .pipe(gulp.dest("./build/"));
 });
 
 

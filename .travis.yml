@@ -1,0 +1,21 @@
+language: node_js
+node_js:
+- '10'
+branches:
+  only:
+  - master
+env:
+  global:
+  - USER="tlfbot"
+  - EMAIL="34430684+tlfbot@users.noreply.github.com"
+  - GH_REPO="github.com/thislooksfun/ld-f-2018-Spaced_Out.git"
+  - secure: ThneCjK6++b4JCw3pHgrwt3063+lhdmZIEMtOZRRreJtR+dDBqBdwIgmD3azP2i6u3LVcAX6Eo2WCGlYRT16Mi3ou1cpip2H2FR58pYDGFlzxLXHaJcE16XL4wOehIat0XsbDJrQg5arxVfVgP1WiTPw5jwtf4VznEnVWQgv8fE5Qp/EToxzMOGfnTmaiUNmzjKevrbFVqS/Z+KMChe5Tzf3eNpxOP5SP9qzTEJcELqKc0KqaHWt3VOg/MN09HyF+LRuiqU1lSnYQfamUsqO5zlqOsrBvA2vQm8DS8F7McYXGK1c6LQ+E1pBJ/5AvJ4uws8PwkARGL1FCYeEu3kbCzXc1asMS/ReFlEkGyZJkKZKoH0Z3Gwru0DEVAHswzyMwvE+xau7N6KGd29aZV1p0+3gXAodkEtvwNrxGy5cOShpA9E8fQTNQOg+TuHC5KZYdwwq6Fyl9+DAJGMBF0G/BtkYu+MRZw4IomkFbewVt2yJ8rsVHpRNG5Q9EuUhK89vGMbHgQoKbT6FGajrRJZaNz/XYw3INWDUHtTaNzv1d+SOit5Eob+HSlBwAjGTjNipDmMd+sLaLm5dloXYP+z5bu3TsC1CsrGBi0jbNAuTW1IhKWYMLJ0JtHDB5aiQe6e+mpJt2Z8ol4VsoBjcTOJ8aU0+whma9EkXG/ed3jfO4mM=
+script: gulp
+after_success:
+- git clone https://github.com/thislooksfun/ld-f-2018-Spaced_Out.git ../staging
+- cp build/ ../staging/
+- cp package.json ../staging/
+- cd ../staging
+- git add -A
+- git commit -m "Generated build $(./version inc-build) at $(date +%s)"
+- git push "https://${GHTOKEN}@${GH_REPO}" master > /dev/null 2>&1
