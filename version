@@ -1,1 +1,15 @@
+#!/usr/bin/env node
 
+"use strict";
+
+const fs = require("fs");
+
+let version = require("./package.json").version;
+var build = fs.readFileSync(".lastbuild", "utf-8");
+
+if (process.argv.length == 4 && process.argv[2] == "inc" && process.argv[3] == "build") {
+  build++;
+  fs.writeFileSync(".lastbuild", build);
+}
+
+console.log(version + " (b" + build + ")");
