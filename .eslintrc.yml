@@ -1,0 +1,33 @@
+env:
+  web: true
+  es6: true
+parserOptions:
+  ecmaVersion: 2017
+extends: 'eslint:recommended'
+rules:
+  indent:
+    - error
+    - 2
+    - SwitchCase: 1
+  linebreak-style:
+    - error
+    - unix
+  quotes:
+    - error
+    - double
+  strict:
+    - error
+    - safe
+  semi:
+    - error
+    - always
+  no-console:
+    - off
+  no-constant-condition:
+    - error
+    - checkLoops: false
+  space-infix-ops:
+    - error
+  spaced-comment:
+    - error
+    - always
