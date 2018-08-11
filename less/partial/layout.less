@@ -1,0 +1,38 @@
+body {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  
+  margin: 0;
+  padding: 0;
+}
+
+#play-area {
+  position: relative;
+  
+  width: 100%;
+  height: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  
+  background-color: @color-background;
+  display: grid;
+  grid-template-columns: 25% 75%;
+  grid-template-rows: 100%;
+}
+
+#launchpads {
+  display: grid;
+  grid-template-columns: 33% 33% 33%;
+  grid-template-rows: 100%;
+}
+
+#people, .launchpad {
+  padding: 20px;
+}
+
+#space-counter {
+  position: fixed;
+}
