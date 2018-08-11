@@ -21,7 +21,7 @@ function log(msg) {
 
 function swallow(err) {
   log(err);
-  this.emit("done");
+  this.emit("end");
 }
 
 var queue = [];
