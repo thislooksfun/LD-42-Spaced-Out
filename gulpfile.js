@@ -17,7 +17,29 @@ const watch      = require("gulp-watch");
 
 gulp.task("default", ["bundle"]);
 
-gulp.task("bundle", ["javascript", "css", "assets"]);
+gulp.task("bundle", ["assets", "html", "less", "javascript"]);
+
+
+gulp.task("assets", function() {
+  return gulp.src("./assets/**/*")
+    .pipe(gulp.dest("./docs/assets/"));
+});
+
+
+gulp.task("html", function() {
+  return gulp.src("./html/**/*")
+    .pipe(gulp.dest("./docs/"));
+});
+
+
+gulp.task("less", function() {
+  return gulp.src("./less/main.less")
+    .pipe(less({
+      paths: [ "./less/main.less" ]
+    }))
+    .on("error", log.error)
+    .pipe(gulp.dest("./docs"));
+});
 
 
 gulp.task("javascript", function() {
@@ -42,24 +64,8 @@ gulp.task("javascript", function() {
 });
 
 
-gulp.task("css", function() {
-  return gulp.src("./less/main.less")
-    .pipe(less({
-      paths: [ "./less/main.less" ]
-    }))
-    .on("error", log.error)
-    .pipe(gulp.dest("./docs"));
-});
-
-
-gulp.task("assets", function() {
-  return gulp.src("./assets/**/*")
-    .pipe(gulp.dest("./docs/assets/"));
-});
-
-
 gulp.task("watch", function() {
-  watch(["assets/**/*", "less/**/*.less", "src/**/*.js"], { ignoreInitial: false }, batch(function (events, done) {
+  watch(["assets/**/*", "html/**/*", "less/**/*.less", "src/**/*.js"], { ignoreInitial: false }, batch(function (events, done) {
     gulp.start("bundle", done);
   }));
 });
