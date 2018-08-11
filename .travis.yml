@@ -10,6 +10,8 @@ env:
 script: gulp
 after_success:
 - git clone "https://github.com/thislooksfun/ld-f-2018-Spaced_Out.git" ../staging
+- ls -l
+- ls -l ./build
 - cp -a ./build/. ../staging/
 - cp package.json ../staging/
 - cd ../staging
