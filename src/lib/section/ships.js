@@ -1,8 +1,6 @@
 "use strict";
 
-const buildTimeInSeconds = 5,
-  ticksPerSecond = 60;
-let currentBuildTime = 0;
+const buildTimeInSeconds = 5;
 
 module.exports = {
   setup() {
@@ -10,23 +8,13 @@ module.exports = {
     this.ship = $(".ship")[0];
   },
   
-  tick() {
-    if(currentBuildTime > 0) {
-      currentBuildTime--;
-
-      if(currentBuildTime === 0) {
-        this.deliverShip();
-      }
-    }
-  },
-  
   startBuild() {
-    currentBuildTime = buildTimeInSeconds * ticksPerSecond;
+    setTimeout(this.deliverShip.bind(this), buildTimeInSeconds * 1000);
     console.log("Started building ship!");
   },
 
   deliverShip() {
-    $(".ship").toggleClass("built");
+    $(".ship").addClass("built");
     console.log("Ship has been delivered!");
   }
 };

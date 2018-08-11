@@ -3,20 +3,11 @@
 const secondsBetweenDecrement = 2;
 var space = 100;
 
-var last = Date.now();
-
 module.exports = {
   setup() {
     this.refresh();
-  },
-  
-  tick() {
-    // Every 2 seconds
-    let now = Date.now();
-    if (now - last >= secondsBetweenDecrement * 1000) {
-      last = now;
-      this.decrement();
-    }
+    
+    setInterval(this.decrement.bind(this), secondsBetweenDecrement * 1000);
   },
   
   decrement() {
