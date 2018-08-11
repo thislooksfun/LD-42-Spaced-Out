@@ -10,12 +10,9 @@ env:
 script: gulp
 after_success:
 - git clone "https://github.com/thislooksfun/ld-f-2018-Spaced_Out.git" ../staging
-- ls -l
-- ls -l ./build
 - cp -a ./build/. ../staging/
 - cp package.json ../staging/
 - cd ../staging
-- ls -l
 - git config user.email 34430684+tlfbot@users.noreply.github.com
 - git config user.name tlfbot
 - git add -A
