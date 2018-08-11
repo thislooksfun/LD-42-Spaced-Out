@@ -17,7 +17,7 @@ const watch      = require("gulp-watch");
 
 gulp.task("default", ["bundle"]);
 
-gulp.task("bundle", ["javascript", "css"]);
+gulp.task("bundle", ["javascript", "css", "assets"]);
 
 
 gulp.task("javascript", function() {
@@ -52,8 +52,14 @@ gulp.task("css", function() {
 });
 
 
+gulp.task("assets", function() {
+  return gulp.src("./assets/**/*")
+    .pipe(gulp.dest("./docs/assets/"));
+});
+
+
 gulp.task("watch", function() {
-  watch(["less/**/*.less", "src/**/*.js"], { ignoreInitial: false }, batch(function (events, done) {
+  watch(["assets/**/*", "less/**/*.less", "src/**/*.js"], { ignoreInitial: false }, batch(function (events, done) {
     gulp.start("bundle", done);
   }));
 });
