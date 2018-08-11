@@ -1,6 +1,8 @@
 env:
-  web: true
+  browser: true
+  commonjs: true
   es6: true
+  jquery: true
 parserOptions:
   ecmaVersion: 2017
 extends: 'eslint:recommended'
