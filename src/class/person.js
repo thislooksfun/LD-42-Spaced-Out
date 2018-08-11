@@ -9,4 +9,10 @@ module.exports = class Person {
     this.requirements = requirements.random(1);
   }
   
+  asHTML() {
+    let item = $("<div>");
+    item.text(this.requirements.toString());
+    return item;
+  }
+  
 };
