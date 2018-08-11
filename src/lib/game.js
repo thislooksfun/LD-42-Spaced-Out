@@ -1,26 +1,26 @@
 "use strict";
 
-console.log("game.js");
-
 // number of ticks per second
 const tickRate = 60;
 
-function setup() {
-  console.log("Setup");
+
+var sections = [
+  require("./section/spaceOnEarth"),
+  // TODO: More gameobjects here
+];
+
+
+// Setup all sections
+for (let s of sections) {
+  s.setup();
 }
 
 
-function run() {
-  console.log("Running");
-  setInterval(tick, 1000 / tickRate);
-}
-
-
+// Tick all sections
 function tick() {
-  console.log("Tick! " + Date());
+  for (let s of sections) {
+    s.tick();
+  }
 }
 
-
-
-setup();
-run();
+setInterval(tick, 1000 / tickRate);

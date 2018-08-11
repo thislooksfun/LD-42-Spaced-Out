@@ -11,7 +11,12 @@ const sourcemaps = require("gulp-sourcemaps");
 const uglify     = require("gulp-uglifyes");
 const watch      = require("gulp-watch");
 
-gulp.task("bundle", function () {
+
+gulp.task("default", ["bundle", /* "css" */]);
+
+gulp.task("bundle", ["javascript"]);
+
+gulp.task("javascript", function() {
   // set up the browserify instance on a task basis
   var b = browserify({
     entries: "./src/main.js",
@@ -32,12 +37,13 @@ gulp.task("bundle", function () {
     .pipe(gulp.dest("./docs/"));
 });
 
+// gulp.task("css", function() {
+//
+// });
+
 
 gulp.task("watch", function() {
   watch("src/**/*.js", { ignoreInitial: false }, batch(function (events, done) {
     gulp.start("bundle", done);
   }));
 });
-
-
-gulp.task("default", ["bundle"]);
