@@ -59,7 +59,7 @@ gulp.task("assets", function() {
 gulp.task("html", function() {
   return gulp.src("./html/**/*")
     .pipe(plumber(log))
-    .pipe(gulp.dest("./buid/"));
+    .pipe(gulp.dest("./build/"));
 });
 
 
