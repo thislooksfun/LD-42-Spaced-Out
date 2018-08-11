@@ -10,17 +10,12 @@ env:
 script: gulp
 after_success:
 - git clone "https://github.com/thislooksfun/ld-f-2018-Spaced_Out.git" ../staging
-- cp build/ ../staging/
+- cp -r build/ ../staging/
 - cp package.json ../staging/
-- pwd
 - cd ../staging
-- pwd
-- ls -l
 - git config user.email 34430684+tlfbot@users.noreply.github.com
 - git config user.name tlfbot
-- git status -s
 - git add -A
 - git status -s
 - git commit -m "Generated build $(./version inc-build) at $(date +%s)"
-- git push "https://${GHTOKEN}@github.com/thislooksfun/ld-f-2018-Spaced_Out.git" master
-# - git push "https://${GHTOKEN}@github.com/thislooksfun/ld-f-2018-Spaced_Out.git" master > /dev/null 2>&1
+- git push "https://${GHTOKEN}@github.com/thislooksfun/ld-f-2018-Spaced_Out.git" master > /dev/null 2>&1
