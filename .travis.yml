@@ -15,6 +15,7 @@ after_success:
 - pwd
 - cd ../staging
 - pwd
+- ls -l
 - git config user.email 34430684+tlfbot@users.noreply.github.com
 - git config user.name tlfbot
 - git status -s
