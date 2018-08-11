@@ -1,10 +1,13 @@
 "use strict";
 
+/* eslint-env node */
+
 const babelify   = require("babelify");
 const batch      = require("gulp-batch");
 const browserify = require("browserify");
 const buffer     = require("vinyl-buffer");
 const gulp       = require("gulp");
+const less       = require("gulp-less");
 const log        = require("gulplog");
 const source     = require("vinyl-source-stream");
 const sourcemaps = require("gulp-sourcemaps");
@@ -12,9 +15,10 @@ const uglify     = require("gulp-uglifyes");
 const watch      = require("gulp-watch");
 
 
-gulp.task("default", ["bundle", /* "css" */]);
+gulp.task("default", ["bundle"]);
 
-gulp.task("bundle", ["javascript"]);
+gulp.task("bundle", ["javascript", "css"]);
+
 
 gulp.task("javascript", function() {
   // set up the browserify instance on a task basis
@@ -37,13 +41,19 @@ gulp.task("javascript", function() {
     .pipe(gulp.dest("./docs/"));
 });
 
-// gulp.task("css", function() {
-//
-// });
+
+gulp.task("css", function() {
+  return gulp.src("./less/main.less")
+    .pipe(less({
+      paths: [ "./less/main.less" ]
+    }))
+    .on("error", log.error)
+    .pipe(gulp.dest("./docs"));
+});
 
 
 gulp.task("watch", function() {
-  watch("src/**/*.js", { ignoreInitial: false }, batch(function (events, done) {
+  watch(["less/**/*.less", "src/**/*.js"], { ignoreInitial: false }, batch(function (events, done) {
     gulp.start("bundle", done);
   }));
 });
