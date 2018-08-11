@@ -13,6 +13,7 @@ after_success:
 - cp -a ./build/. ../staging/
 - cp package.json ../staging/
 - cd ../staging
+- ls -l
 - git config user.email 34430684+tlfbot@users.noreply.github.com
 - git config user.name tlfbot
 - git add -A
