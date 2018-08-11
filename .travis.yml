@@ -17,4 +17,5 @@ after_success:
 - git config user.name tlfbot
 - git add -A
 - git commit -m "Generated build $(./version inc-build) at $(date +%s)"
-- git push "https://${GHTOKEN}@github.com/thislooksfun/ld-f-2018-Spaced_Out.git" master > /dev/null 2>&1
+- git push "https://${GHTOKEN}@github.com/thislooksfun/ld-f-2018-Spaced_Out.git" master
+# - git push "https://${GHTOKEN}@github.com/thislooksfun/ld-f-2018-Spaced_Out.git" master > /dev/null 2>&1
