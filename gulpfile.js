@@ -1,17 +1,79 @@
 "use strict";
 
+/* eslint-env node */
+
 const babelify   = require("babelify");
 const batch      = require("gulp-batch");
 const browserify = require("browserify");
 const buffer     = require("vinyl-buffer");
 const gulp       = require("gulp");
-const log        = require("gulplog");
+const less       = require("gulp-less");
+const plumber    = require("gulp-plumber");
 const source     = require("vinyl-source-stream");
 const sourcemaps = require("gulp-sourcemaps");
 const uglify     = require("gulp-uglifyes");
 const watch      = require("gulp-watch");
 
-gulp.task("bundle", function () {
+
+function log(msg) {
+  console.log(msg.toString());
+}
+
+function swallow(err) {
+  log(err);
+  this.emit("done");
+}
+
+var queue = [];
+function enqueue(task, done) {
+  queue.push({t: task, d: done});
+  log(">> Enqueued '" + task + "'");
+  if (queue.length == 1) {
+    processNext();
+  }
+}
+function processNext() {
+  if (queue.length == 0) { return; }
+  let itm = queue[0];
+  log(">> Running task '" + itm.t + "'");
+  gulp.start(itm.t, function() {
+    queue.shift();
+    itm.d();
+    if (queue.length > 0) {
+      processNext();
+    }
+  });
+}
+
+
+gulp.task("default", ["assets", "html", "less", "javascript"]);
+
+
+gulp.task("assets", function() {
+  return gulp.src("./assets/**/*")
+    .pipe(plumber(log))
+    .pipe(gulp.dest("./build/assets/"));
+});
+
+
+gulp.task("html", function() {
+  return gulp.src("./html/**/*")
+    .pipe(plumber(log))
+    .pipe(gulp.dest("./buid/"));
+});
+
+
+gulp.task("less", function() {
+  return gulp.src("./less/main.less")
+    .pipe(less({
+      paths: [ "./less/main.less" ]
+    }))
+    .pipe(plumber(log))
+    .pipe(gulp.dest("./build/"));
+});
+
+
+gulp.task("javascript", function() {
   // set up the browserify instance on a task basis
   var b = browserify({
     entries: "./src/main.js",
@@ -23,21 +85,28 @@ gulp.task("bundle", function () {
   return b
     .transform(babelify, {sourceMaps:true})
     .bundle()
+    .on("error", swallow)
+    .pipe(plumber(log))
     .pipe(source("bundle.js"))
     .pipe(buffer())
     .pipe(sourcemaps.init({loadMaps: true}))
     .pipe(uglify())
-    .on("error", log.error)
     .pipe(sourcemaps.write("./"))
-    .pipe(gulp.dest("./docs/"));
+    .pipe(gulp.dest("./build/"));
 });
 
 
 gulp.task("watch", function() {
+  watch("assets/**/*", { ignoreInitial: false }, batch(function (events, done) {
+    enqueue("assets", done);
+  }));
+  watch("html/**/*.html", { ignoreInitial: false }, batch(function (events, done) {
+    enqueue("html", done);
+  }));
+  watch("less/**/*.less", { ignoreInitial: false }, batch(function (events, done) {
+    enqueue("less", done);
+  }));
   watch("src/**/*.js", { ignoreInitial: false }, batch(function (events, done) {
-    gulp.start("bundle", done);
+    enqueue("javascript", done);
   }));
 });
-
-
-gulp.task("default", ["bundle"]);
