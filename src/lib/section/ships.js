@@ -1,39 +1,19 @@
 "use strict";
 
 // Time to build, in seconds
-const buildTime = 5;
+// const buildTime = 5;
 
 module.exports = {
   setup() {
-    
+    $("#build-ship").click(this.buildShip.bind(this));
   },
   
   tick() {
     
   },
   
-  // setup() {
-  //   this.refresh();
-  // },
-  //
-  // tick() {
-  //   // Every 2 seconds
-  //   let now = Date.now();
-  //   if (now - last >= buildTime * 1000) {
-  //     last = now;
-  //     this.decrement();
-  //   }
-  // },
-  //
-  // decrement() {
-  //   space--;
-  //
-  //   // TODO: Check for 'space' reaching 0, then end the game
-  //
-  //   this.refresh();
-  // },
-  //
-  // refresh() {
-  //   $("#room-left").text(space);
-  // }
+  buildShip() {
+    console.log("Build Ship!");
+    // TODO: Start building a ship
+  }
 };

@@ -5,6 +5,7 @@ const tickRate = 60;
 
 
 var sections = [
+  require("./section/ships"),
   require("./section/spaceOnEarth"),
   // TODO: More gameobjects here
 ];
