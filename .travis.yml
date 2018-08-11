@@ -15,7 +15,8 @@ after_success:
 - cd ../staging
 - git config user.email 34430684+tlfbot@users.noreply.github.com
 - git config user.name tlfbot
+- ./version inc build
 - git add -A
 - git status -s
-- git commit -m "Generated build $(./version inc-build) at $(date +%s)"
+- git commit -m "Generated build $(./version) at $(date +%s)"
 - git push "https://${GHTOKEN}@github.com/thislooksfun/ld-f-2018-Spaced_Out.git" master > /dev/null 2>&1
