@@ -1,6 +1,6 @@
 "use strict";
 
-const requirements = require("requirements");
+const requirements = require("../lib/requirements");
 
 module.exports = class Person {
   
