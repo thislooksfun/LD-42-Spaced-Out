@@ -108,7 +108,7 @@ gulp.task("javascript", function() {
 });
 
 
-gulp.task("watch", function() {
+gulp.task("watch", ["clean"], function() {
   watch("assets/**/*", { ignoreInitial: false }, batch(function (events, done) {
     enqueue("assets", done);
   }));
