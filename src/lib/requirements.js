@@ -11,7 +11,7 @@ module.exports = {
     }
     
     while (count > 0 && list.length > 0) {
-      let index = utils.rand(list.length);
+      let index = utils.rand(list.length - 1);
       out.push(list[index]);
       list.splice(index, 1);
       count--;
