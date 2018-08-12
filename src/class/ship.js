@@ -16,12 +16,10 @@ function dragOver(ev) {
 }
 
 function dragEnter() {
-  console.log("drag enter");
   $(this).addClass("dragged-over");
 }
 
 function dragLeave() {
-  console.log("drag leave");
   $(this).removeClass("dragged-over");
 }
 

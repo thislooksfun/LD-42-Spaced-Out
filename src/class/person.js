@@ -48,7 +48,6 @@ module.exports = class Person {
   }
   
   setupDragging() {
-    console.log("Setting up dragging");
     let id = this.id;
     this.$el.on("dragstart", function(e) {
       dragStart.call(this, e, id);
