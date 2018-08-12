@@ -3,9 +3,18 @@ header {
   grid-template-columns: 50% 50%;
   grid-template-rows: 100%;
   
+  padding: 0 30px;
+  
   div {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    
+    &:nth-child(1) {
+      text-align: left;
+    }
+    &:nth-child(2) {
+      text-align: right;
+    }
   }
 }
