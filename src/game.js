@@ -7,8 +7,24 @@ var sections = [
   // TODO: More sections here
 ];
 
-
-// Setup all sections
-for (let s of sections) {
-  s.setup();
-}
+module.exports = {
+  begin() {
+    // Setup all sections
+    for (let s of sections) {
+      if (typeof s.setup === "function") {
+        s.setup();
+      }
+    }
+  },
+  
+  end(reason) {
+    console.log("Ending game -- reason: " + reason);
+    for (let s of sections) {
+      if (typeof s.teardown === "function") {
+        s.teardown();
+      }
+    }
+    
+    // TODO: Display end-of-game screen
+  }
+};

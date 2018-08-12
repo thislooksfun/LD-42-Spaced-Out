@@ -11,18 +11,22 @@ var people = [];
 module.exports = {
   setup() {
     // TODO
-    setInterval(this.addNew.bind(this), newPersonInterval * 1000);
+    this._timer = setInterval(this.addNew.bind(this), newPersonInterval * 1000);
     
     for (var i = 0; i < startingPeople; i++) {
       this.addNew();
     }
   },
   
+  teardown() {
+    clearInterval(this._timer);
+  },
+  
   addNew() {
     if (people.length < maxPeople) {
       let newPerson = new Person();
       people.push(newPerson);
-      this.refresh();
+      $("#people").append(newPerson.asHTML());
     }
   },
   

@@ -1,14 +1,18 @@
 "use strict";
 
 const Ship = require("../class/ship");
+const dnd = require("../lib/dragAndDrop");
 
 const buildTimeInSeconds = 5;
+
 
 module.exports = {
   maxShips: 1,
   ships: [],
   
   setup() {
+    dnd.addTarget($(".launchpad"));
+    
     $("#build-ship").click(this.startBuild.bind(this));
     this.ship = $(".ship")[0];
   },

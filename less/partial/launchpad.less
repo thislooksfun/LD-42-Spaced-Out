@@ -11,13 +11,22 @@
 }
 
 #launchpads {
-  :nth-child(1) {
-    background: #a00;
+  .launchpad:nth-child(1) {
+    background: #600;
+    &.dragged-over {
+      background: #a00;
+    }
   }
-  :nth-child(2) {
-    background: #0a0;
+  .launchpad:nth-child(2) {
+    background: #060;
+    &.dragged-over {
+      background: #0a0;
+    }
   }
-  :nth-child(3) {
-    background: #00a;
+  .launchpad:nth-child(3) {
+    background: #006;
+    &.dragged-over {
+      background: #00a;
+    }
   }
 }
