@@ -2,14 +2,11 @@
 
 const attributes = require("../lib/attributes");
 const util = require("../lib/util");
+const diffScale = require("../section/score").diffScale;
 
 
-// Duration of difficulty ramp in seconds
-const difficultyRampsOver = 5 * 60;  // 5 minutes
 const maxAttributes = 5;
 
-// Time in ms
-const diffRamp = difficultyRampsOver * 1000;
 
 function dragStart(e, id) {
   $(this).addClass("dragging");
@@ -37,8 +34,7 @@ module.exports = class Person {
   constructor() {
     this.id = util.uuidv4();
     
-    let time = runningTime();
-    let scaledAttrMax =  Math.floor(1 + ((maxAttributes - 1) * (time / diffRamp)));
+    let scaledAttrMax =  Math.floor(1 + ((maxAttributes - 1) * diffScale()));
     let max = Math.min(scaledAttrMax, maxAttributes);
     
     this.needs   = attributes.random(util.rand(max));

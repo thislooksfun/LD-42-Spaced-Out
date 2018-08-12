@@ -1,6 +1,7 @@
 "use strict";
 
 const Ship = require("../class/ship");
+const prettyPrint = require("../lib/util").prettyPrint;
 const bank = require("./bank");
 
 // const buildTimeInSeconds = 5;
@@ -17,6 +18,10 @@ let pad3 = { ship: null, bought: false, $title: $("#pad1 h1"), $content: $("#pad
 module.exports = {
   
   setup() {
+    
+  },
+  
+  start() {
     // TODO: Custom drop action to add to Ship instance
     // TODO: Make sure Person instance is removed from "people" array in "people.js"
     
@@ -48,7 +53,7 @@ module.exports = {
     } else if (pad.bought) {
       // TODO: Render empty pad + 'build' button
       pad.$content.append($("<span>", {text: "Empty"}));
-      let buildBtn = $("<button>", {class: "build", text: "Build (" + bank.prettyPrint(priceToBuildShip) + ")"});
+      let buildBtn = $("<button>", {class: "build", text: "Build ($" + prettyPrint(priceToBuildShip) + ")"});
       let _this = this;
       buildBtn.click(function() {
         if (!bank.canSpend(priceToBuildShip)) {
@@ -65,7 +70,7 @@ module.exports = {
     } else {
       // TODO: Render locked pad + 'buy' button
       pad.$content.append($("<span>", {text: "Locked"}));
-      let buyBtn = $("<button>", {class: "unlock", text: "Unlock (" + bank.prettyPrint(priceToBuyPad) + ")"});
+      let buyBtn = $("<button>", {class: "unlock", text: "Unlock ($" + prettyPrint(priceToBuyPad) + ")"});
       let _this = this;
       buyBtn.click(function() {
         if (!bank.canSpend(priceToBuyPad)) {

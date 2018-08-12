@@ -15,6 +15,9 @@ let $header = $("#lobby h1");
 module.exports = {
   setup() {
     // TODO
+  },
+  
+  start() {
     this._timer = setInterval(this.addNew.bind(this), newPersonInterval * 1000);
     
     for (var i = 0; i < startingPeople; i++) {

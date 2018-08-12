@@ -5,7 +5,12 @@ var space = 100;
 // var space = 10;
 
 module.exports = {
+  
   setup() {
+    // TODO
+  },
+  
+  start() {
     this.refresh();
     
     this._timer = setInterval(this.decrement.bind(this), secondsBetweenDecrement * 1000);

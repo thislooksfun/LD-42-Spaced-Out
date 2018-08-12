@@ -1,6 +1,7 @@
 "use strict";
 
 const game = require("../game");
+const prettyPrint = require("../lib/util").prettyPrint;
 
 const startingMoney = 100000;
 
@@ -8,12 +9,7 @@ const startingMoney = 100000;
 var money = -1;
 let $balance = $("#balance");
 function redraw() {
-  $balance.text(prettyPrint());
-}
-
-function prettyPrint(amt) {
-  let num = (amt == null) ? money : amt;
-  return "$" + num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  $balance.text("$" + prettyPrint(money));
 }
 
 module.exports = {
@@ -39,6 +35,4 @@ module.exports = {
     money += amount;
     redraw();
   },
-  
-  prettyPrint: prettyPrint,
 };
