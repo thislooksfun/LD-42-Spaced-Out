@@ -26,9 +26,12 @@ function dragLeave() {
 
 module.exports = class Person {
   
-  constructor() {
+  constructor(pad, redraw) {
     this.attributes = attributes.random(1);
     this.passengers = [];
+    
+    this._pad = pad;
+    this._redraw = redraw;
     
     this.$el = $("<div>", {
       class: "ship"
@@ -97,6 +100,8 @@ module.exports = class Person {
   launch() {
     // TODO:
     console.log("Launching ship!", this.passengers);
+    this._pad.ship = null;
+    this._redraw();
   }
   
 };

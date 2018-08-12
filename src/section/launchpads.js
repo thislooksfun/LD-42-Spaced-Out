@@ -18,23 +18,15 @@ let pad3 = { ship: null, bought: false, $title: $("#pad1 h1"), $content: $("#pad
 module.exports = {
   
   setup() {
-    
+    // TODO: ?
   },
   
   start() {
-    // TODO: Custom drop action to add to Ship instance
-    // TODO: Make sure Person instance is removed from "people" array in "people.js"
-    
-    // dnd.addTarget($(".launchpad"), {sticky: true});
-    
-    pad1.ship = new Ship();
+    pad1.ship = new Ship(pad1, this.redraw.bind(this, pad1));
     
     this.redraw(pad1);
     this.redraw(pad2);
     this.redraw(pad3);
-    
-    // $("#build-ship").click(this.startBuild.bind(this));
-    // this.ship = $(".ship")[0];
   },
   
   // startBuild() {
@@ -63,7 +55,7 @@ module.exports = {
         }
         bank.purchase(priceToBuildShip);
         
-        pad.ship = new Ship();
+        pad.ship = new Ship(pad, _this.redraw.bind(_this, pad));
         _this.redraw(pad);
       });
       pad.$content.append(buildBtn);
