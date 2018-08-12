@@ -2,7 +2,28 @@
 
 const requirements = require("../lib/requirements");
 const util = require("../lib/util");
-const dnd = require("../lib/dragAndDrop");
+
+
+function dragStart(e, id) {
+  $(this).addClass("dragging");
+  
+  let dt = e.originalEvent.dataTransfer;
+  dt.effectAllowed = "move";
+  dt.setData("text/plain", id);
+}
+
+function dragEnd() {
+  let $el = $(this);
+  $el.removeClass("dragging");
+  $(".launchpad").removeClass("dragged-over");
+  
+  if ($el.data("removeOnDragEnd")) {
+    $el.off("dragstart");
+    $el.off("dragend");
+    $el.removeAttr("draggable");
+  }
+}
+
 
 module.exports = class Person {
   
@@ -11,15 +32,26 @@ module.exports = class Person {
     let numReqs = util.rand(1);
     let numDes  = util.rand(1);
     
+    this.id = util.uuidv4();
+    
     this.requirements = requirements.random(numReqs);
     this.desires      = requirements.random(numDes, this.requirements.unused);
+    
+    this.$el = $("<div>", { class: "person" });
   }
   
-  asHTML() {
-    let $div = $("<div>", {
-      class: "person",
-      draggable: true,
+  setupDragging() {
+    console.log("Setting up dragging");
+    let id = this.id;
+    this.$el.on("dragstart", function(e) {
+      dragStart.call(this, e, id);
     });
+    this.$el.on("dragend", dragEnd);
+    this.$el.attr("draggable", true);
+  }
+  
+  toHTML() {
+    this.$el.empty();
     
     let $requirements = $("<div>", {
       class: "requirements",
@@ -43,9 +75,8 @@ module.exports = class Person {
       }
     }
     
-    $div.append($requirements, $desires);
-    dnd.addSource($div);
+    this.$el.append($requirements, $desires);
     
-    return $div;
+    return this.$el;
   }
 };

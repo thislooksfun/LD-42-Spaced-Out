@@ -1,41 +1,9 @@
-.ship {
-  display: none;
-  width: 1em;
-  height: 1em;
-  margin: 1em;
-  background-color: coral;
-}
-
-.ship.built {
-  display: block;
-}
-
 #launchpads {
   
   .launchpad {
     padding: 20px;
-    
-    &.dragged-over {
-      background: @color-drag-over;
-    }
   }
   
-  // .launchpad:nth-child(1) {
-  //   background: #600;
-  //   &.dragged-over {
-  //     background: #a00;
-  //   }
-  // }
-  // .launchpad:nth-child(2) {
-  //   background: #060;
-  //   &.dragged-over {
-  //     background: #0a0;
-  //   }
-  // }
-  // .launchpad:nth-child(3) {
-  //   background: #006;
-  //   &.dragged-over {
-  //     background: #00a;
-  //   }
-  // }
 }
+
+@import "ship";
