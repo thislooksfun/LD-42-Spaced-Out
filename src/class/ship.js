@@ -84,7 +84,21 @@ module.exports = class Person {
       this.$el.append($("<div>", {class: "slot empty"}));
     }
     
+    let $launchBtn = $("<button>", {class: "launch", text: "Launch!"});
+    $launchBtn.click(this.launch.bind(this));
+    
+    if (this.passengers.length == 0) {
+      $launchBtn.prop("disabled", true);
+    }
+    
+    this.$el.append($launchBtn);
+    
     return this.$el;
+  }
+  
+  launch() {
+    // TODO:
+    console.log("Launching ship!", this.passengers);
   }
   
 };
