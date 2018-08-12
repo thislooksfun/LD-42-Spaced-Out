@@ -2,7 +2,7 @@
 
 var sections = [
   require("./section/launchpads"),
-  require("./section/people"),
+  require("./section/lobby"),
   require("./section/spaceOnEarth"),
   // TODO: More sections here
 ];

@@ -8,6 +8,8 @@ const maxPeople = 10;
 
 var people = [];
 
+let $lobby = $("#lobby");
+
 module.exports = {
   setup() {
     // TODO
@@ -26,15 +28,15 @@ module.exports = {
     if (people.length < maxPeople) {
       let newPerson = new Person();
       people.push(newPerson);
-      $("#people").append(newPerson.asHTML());
+      $lobby.append(newPerson.asHTML());
     }
   },
   
   refresh() {
-    $("#people").empty();
+    $lobby.empty();
     
     for (let person of people) {
-      $("#people").append(person.asHTML());
+      $lobby.append(person.asHTML());
     }
   },
 };
