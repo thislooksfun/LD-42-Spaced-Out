@@ -8,7 +8,7 @@ const hardestDifficultyAt = 100;
 var saved = -1;
 let $saved = $("#saved");
 function redraw() {
-  $saved.text(prettyPrint(saved));
+  $saved.text(prettyPrint(saved) + " " + (saved === 1 ? "person" : "people"));
 }
 
 module.exports = {
