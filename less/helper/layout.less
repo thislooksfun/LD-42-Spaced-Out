@@ -1,0 +1,66 @@
+@grid-line: 2px solid black;
+
+body {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  
+  margin: 0;
+  padding: 0;
+}
+
+#play-area {
+  position: relative;
+  
+  width: 100%;
+  height: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  
+  background-color: @color-background;
+  display: grid;
+  grid-template-columns: 25% 75%;
+  grid-template-rows: 75px auto;
+}
+
+// Top row
+#population {
+  grid-column: 1;
+  grid-row: 1;
+  
+  border-bottom: @grid-line;
+}
+
+header {
+  grid-column: 2 / 4;
+  
+  border-bottom: @grid-line;
+  border-right: @grid-line;
+  
+}
+
+
+// Bottom row
+#lobby {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+#launchpads {
+  grid-column: 2;
+  grid-row: 2;
+  
+  display: grid;
+  grid-template-columns: 33.4% 33.3% 33.3%;
+  grid-template-rows: 100%;
+}
+
+// Columns
+#population, #lobby, .launchpad {
+  border-right: @grid-line;
+}
+#population, #lobby {
+  border-left: @grid-line;
+}

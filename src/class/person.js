@@ -1,8 +1,15 @@
 "use strict";
 
-const requirements = require("../lib/requirements");
+const attributes = require("../lib/attributes");
 const util = require("../lib/util");
 
+
+// Duration of difficulty ramp in seconds
+const difficultyRampsOver = 5 * 60;  // 5 minutes
+const maxAttributes = 5;
+
+// Time in ms
+const diffRamp = difficultyRampsOver * 1000;
 
 function dragStart(e, id) {
   $(this).addClass("dragging");
@@ -28,14 +35,14 @@ function dragEnd() {
 module.exports = class Person {
   
   constructor() {
-    // TODO: Start between 0/1, and work up to 0/5
-    let numReqs = util.rand(1);
-    let numDes  = util.rand(1);
-    
     this.id = util.uuidv4();
     
-    this.requirements = requirements.random(numReqs);
-    this.desires      = requirements.random(numDes, this.requirements.unused);
+    let time = runningTime();
+    let scaledAttrMax =  Math.floor(1 + ((maxAttributes - 1) * (time / diffRamp)));
+    let max = Math.min(scaledAttrMax, maxAttributes);
+    
+    this.needs   = attributes.random(util.rand(max));
+    this.desires = attributes.random(util.rand(max), this.needs.unused);
     
     this.$el = $("<div>", { class: "person" });
   }
@@ -53,14 +60,14 @@ module.exports = class Person {
   toHTML() {
     this.$el.empty();
     
-    let $requirements = $("<div>", {
-      class: "requirements",
+    let $needs = $("<div>", {
+      class: "needs",
     });
-    if (this.requirements.length === 0) {
-      $requirements.append($("<span>", { text: "-- no requirements --" }));
+    if (this.needs.length === 0) {
+      $needs.append($("<span>", { text: "-- no needs --" }));
     } else {
-      for (let req of this.requirements) {
-        $requirements.append($("<span>", { text: req }));
+      for (let req of this.needs) {
+        $needs.append($("<span>", { text: req }));
       }
     }
     
@@ -75,7 +82,7 @@ module.exports = class Person {
       }
     }
     
-    this.$el.append($requirements, $desires);
+    this.$el.append($needs, $desires);
     
     return this.$el;
   }

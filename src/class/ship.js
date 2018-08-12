@@ -1,6 +1,6 @@
 "use strict";
 
-const requirements = require("../lib/requirements");
+const attributes = require("../lib/attributes");
 const lobby = require("../section/lobby");
 
 const maxPassengers = 5;
@@ -29,8 +29,7 @@ function dragLeave() {
 module.exports = class Person {
   
   constructor() {
-    // TODO: Start between 0/1, and work up to 0/5
-    this.requirements = requirements.random(1);
+    this.attributes = attributes.random(1);
     this.passengers = [];
     
     this.$el = $("<div>", {
