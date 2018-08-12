@@ -11,7 +11,7 @@ const less       = require("gulp-less");
 const plumber    = require("gulp-plumber");
 const source     = require("vinyl-source-stream");
 const sourcemaps = require("gulp-sourcemaps");
-const uglify     = require("gulp-uglifyes");
+// const uglify     = require("gulp-uglifyes");
 const watch      = require("gulp-watch");
 
 
