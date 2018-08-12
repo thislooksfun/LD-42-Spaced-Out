@@ -1,8 +1,8 @@
 "use strict";
 
 var sections = [
+  require("./section/launchpads"),
   require("./section/people"),
-  require("./section/ships"),
   require("./section/spaceOnEarth"),
   // TODO: More sections here
 ];
