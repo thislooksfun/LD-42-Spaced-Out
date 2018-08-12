@@ -43,9 +43,23 @@ module.exports = {
     } else if (pad.bought) {
       // TODO: Render empty pad + 'build' button
       pad.$content.append($("<span>", {text: "Empty"}));
+      let buildBtn = $("<button>", {class: "build", text: "Build"});
+      let _this = this;
+      buildBtn.click(function() {
+        pad.ship = new Ship();
+        _this.redraw(pad);
+      });
+      pad.$content.append(buildBtn);
     } else {
       // TODO: Render locked pad + 'buy' button
       pad.$content.append($("<span>", {text: "Locked"}));
+      let buyBtn = $("<button>", {class: "unlock", text: "Unlock"});
+      let _this = this;
+      buyBtn.click(function() {
+        pad.bought = true;
+        _this.redraw(pad);
+      });
+      pad.$content.append(buyBtn);
     }
   },
 
