@@ -11,7 +11,7 @@ module.exports = {
   ships: [],
   
   setup() {
-    dnd.addTarget($(".launchpad"));
+    dnd.addTarget($(".launchpad"), {sticky: true});
     
     $("#build-ship").click(this.startBuild.bind(this));
     this.ship = $(".ship")[0];

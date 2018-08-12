@@ -1,22 +1,29 @@
 "use strict";
 
-var sources = [];
-var targets = [];
+const uuid = require("../lib/util").uuidv4;
+
+var sources = {};
+var targets = {};
 
 
 
 const sourceActions = {
-  dragStart(i, e) {
+  dragStart(key, e) {
     $(this).addClass("dragging");
     
     let dt = e.originalEvent.dataTransfer;
     dt.effectAllowed = "move";
-    dt.setData("text/plain", "" + i);
+    dt.setData("text/plain", key);
   },
   
-  dragEnd() {
-    $(this).removeClass("dragging");
+  dragEnd(key) {
+    let $this = $(this);
+    $this.removeClass("dragging");
     $(".launchpad").removeClass("dragged-over");
+    
+    if ($this.data("removeOnDragEnd")) {
+      remove(key);
+    }
   }
 };
 
@@ -39,58 +46,87 @@ const targetActions = {
     $(this).removeClass("dragged-over");
   },
 
-  drop(num, ev) {
+  drop(key, ev, sticky) {
     let e = ev.originalEvent;
     if(e.preventDefault) { e.preventDefault(); }
     if(e.stopPropagation) { e.stopPropagation(); }
     
-    console.log("Dropped on " + num);
+    let sourceKey = e.dataTransfer.getData("text/plain");
+    let $el = sources[sourceKey];
+    $(this).append($el.detach());
     
-    let $el = sources[parseInt(e.dataTransfer.getData("text/plain"))];
-    $(".launchpad:nth-child(" + (num + 1) + ")").append($el.detach());
-    // TODO: Move things around!
+    if (sticky) {
+      // Don't let it leave!
+      $el.data("removeOnDragEnd", true);
+    }
     
     return false;
   }
 };
 
 
-function setupSource(i, $el) {
+function setupSource(key, $el) {
   $el.on("dragstart", function(e) {
-    sourceActions.dragStart.call(this, i, e);
+    sourceActions.dragStart.call(this, key, e);
   });
-  $el.on("dragend", sourceActions.dragEnd);
-  
-  sources.push($el);
+  $el.on("dragend", function(e) {
+    sourceActions.dragEnd.call(this, key, e);
+  });
 }
 
-function setupTarget(i, $el) {
+function setupTarget(key, $el, opts) {
+  opts = opts || {};
+  
   $el.on("dragover",  targetActions.dragOver);
   $el.on("dragenter", targetActions.dragEnter);
   $el.on("dragleave", targetActions.dragLeave);
   
   $el.on("drop", function(e) {
-    targetActions.drop.call(this, i, e);
+    targetActions.drop.call(this, key, e, opts.sticky);
   });
 }
 
 
-module.exports = {
+function remove(key) {
   
+  if (sources[key] != null) {
+    let $el = sources[key];
+    delete sources[key];
+    // Trigger "dragend", just in case
+    $el.trigger("dragend");
+    
+    $el.off("dragstart");
+    $el.off("dragend");
+    $el.removeAttr("draggable");
+  } else if (targets[key] != null) {
+    let $el = targets[key];
+    delete targets[key];
+    $el.off("dragover");
+    $el.off("dragenter");
+    $el.off("dragleave");
+    $el.off("drag");
+  }
+  
+}
+
+
+module.exports = {
   addSource(el) {
     $(el).each(function() {
       let $el = $(this);
-      setupSource(sources.length, $el);
-      sources.push($el);
+      let key = uuid();
+      $el.attr("draggable", true);
+      sources[key] = $el;
+      setupSource(key, $el);
     });
   },
   
-  addTarget(el) {
+  addTarget(el, opts) {
     $(el).each(function() {
       let $el = $(this);
-      setupTarget(targets.length, $el);
-      targets.push($el);
+      let key = uuid();
+      targets[key] = $el;
+      setupTarget(key, $el, opts);
     });
   },
-  
 };
