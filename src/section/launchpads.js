@@ -11,6 +11,8 @@ module.exports = {
   ships: [],
   
   setup() {
+    // TODO: Custom drop action to add to Ship instance
+    // TODO: Make sure Person instance is removed from "people" array in "people.js"
     dnd.addTarget($(".launchpad"), {sticky: true});
     
     $("#build-ship").click(this.startBuild.bind(this));
@@ -26,7 +28,6 @@ module.exports = {
   },
 
   deliverShip() {
-    
     $(".ship").addClass("built");
     console.log("Ship has been delivered!");
   }
