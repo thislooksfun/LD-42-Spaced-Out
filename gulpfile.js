@@ -67,10 +67,10 @@ gulp.task("html", function() {
 
 gulp.task("less", function() {
   return gulp.src("./less/main.less")
+    .pipe(plumber(log))
     .pipe(less({
       paths: [ "./less/main.less" ]
     }))
-    .pipe(plumber(log))
     .pipe(gulp.dest("./build/"));
 });
 
