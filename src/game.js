@@ -1,6 +1,7 @@
 "use strict";
 
 var sections = [
+  require("./section/bank"),
   require("./section/launchpads"),
   require("./section/lobby"),
   require("./section/spaceOnEarth"),
