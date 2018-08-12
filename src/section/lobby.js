@@ -9,6 +9,7 @@ const maxPeople = 10;
 var people = [];
 
 let $lobby = $("#lobby");
+let $header = $lobby.children("h1");
 
 module.exports = {
   setup() {
@@ -30,6 +31,14 @@ module.exports = {
       people.push(newPerson);
       $lobby.append(newPerson.asHTML());
     }
+    $header.text("Lobby (" + people.length + "/" + maxPeople + ")");
+  },
+  
+  remove(at) {
+    $lobby.children(".person:nth-child(" + at + ")").remove();
+    let person = people.splice(at, 1);
+    $header.text("Lobby (" + people.length + "/" + maxPeople + ")");
+    return person;
   },
   
   refresh() {
