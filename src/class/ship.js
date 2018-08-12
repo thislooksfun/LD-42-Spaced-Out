@@ -56,8 +56,9 @@ module.exports = class Person {
       if(e.preventDefault) { e.preventDefault(); }
       if(e.stopPropagation) { e.stopPropagation(); }
       
-      let id = e.dataTransfer.getData("text/plain");
+      $(".dragged-over").removeClass("dragged-over");
       
+      let id = e.dataTransfer.getData("text/plain");
       let passenger = lobby.get(id);
       
       if (!_this.addPassenger(passenger)) {
@@ -69,8 +70,6 @@ module.exports = class Person {
       
       passenger.$el.data("removeOnDragEnd", true);
       passenger.$el.trigger("dragend");
-      
-      $(".dragged-over").removeClass("dragged-over");
       
       redraw();
     });
