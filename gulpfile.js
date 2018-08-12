@@ -21,23 +21,25 @@ function log(msg) {
 
 function swallow(err) {
   log(err);
-  this.emit("done");
+  this.emit("end");
 }
 
 var queue = [];
+var running = false;
 function enqueue(task, done) {
   queue.push({t: task, d: done});
   log(">> Enqueued '" + task + "'");
-  if (queue.length == 1) {
+  if (!running) {
     processNext();
   }
 }
 function processNext() {
   if (queue.length == 0) { return; }
-  let itm = queue[0];
+  running = true;
+  let itm = queue.shift();
   log(">> Running task '" + itm.t + "'");
   gulp.start(itm.t, function() {
-    queue.shift();
+    running = false;
     itm.d();
     if (queue.length > 0) {
       processNext();
@@ -65,10 +67,10 @@ gulp.task("html", function() {
 
 gulp.task("less", function() {
   return gulp.src("./less/main.less")
+    .pipe(plumber(log))
     .pipe(less({
       paths: [ "./less/main.less" ]
     }))
-    .pipe(plumber(log))
     .pipe(gulp.dest("./build/"));
 });
 
@@ -90,7 +92,7 @@ gulp.task("javascript", function() {
     .pipe(source("bundle.js"))
     .pipe(buffer())
     .pipe(sourcemaps.init({loadMaps: true}))
-    .pipe(uglify())
+    // .pipe(uglify())
     .pipe(sourcemaps.write("./"))
     .pipe(gulp.dest("./build/"));
 });

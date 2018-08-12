@@ -1,15 +1,11 @@
-.ship {
-  display: none;
-  width: 1em;
-  height: 1em;
-  margin: 1em;
-  background-color: coral;
-}
+// Helpers
+@import "helper/vars";
+@import "helper/global";
 
-.ship.built {
-  display: block;
-}
+// General layout
+@import "partial/layout";
 
-body {
-  background-color: white;
-}
+// Sections
+@import "partial/launchpad";
+@import "partial/lobby";
+@import "partial/population";

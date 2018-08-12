@@ -3,14 +3,21 @@
 const utils = require("./util");
 
 module.exports = {
-  random(count = 5) {
+  random(count = 5, list = null) {
     var out = [];
-    var list = self.list;
+    if (list == null) {
+      // Make a copy of the array
+      list = this.list.slice(this.list);
+    }
+    
     while (count > 0 && list.length > 0) {
-      let index = utils.rand(list.length);
+      let index = utils.rand(list.length - 1);
       out.push(list[index]);
       list.splice(index, 1);
+      count--;
     }
+    
+    out.unused = list;
     return out;
   },
   
@@ -20,5 +27,26 @@ module.exports = {
     "C",
     "D",
     "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+    "O",
+    "P",
+    "Q",
+    "R",
+    "S",
+    "T",
+    "U",
+    "V",
+    "W",
+    "X",
+    "Y",
+    "Z",
   ],
 };
