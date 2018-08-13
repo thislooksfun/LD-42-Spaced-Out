@@ -25,7 +25,7 @@ module.exports = {
     space--;
     
     if (space <= 0) {
-      require("../game").end("Out of space!");
+      require("../game").end("The Earth has run out of space.");
     }
     
     this.redraw();

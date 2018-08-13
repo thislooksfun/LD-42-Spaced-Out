@@ -74,7 +74,7 @@ module.exports = {
     }
     money -= cost;
     if (money < 0) {
-      require("../game").end("Out of money!");
+      require("../game").end("You, the last commercial space flight company have run out of money. Thus, the no one can leave the planet and it has run out of space.");
     }
     
     queueCashflow($("<span>", {

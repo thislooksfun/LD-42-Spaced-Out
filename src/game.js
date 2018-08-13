@@ -58,7 +58,7 @@ module.exports = {
     $overlayContainer.empty();
     $overlayContainer.append($("<h1>", {text: "Game Over"}));
     let score = require("./section/score").format();
-    $overlayContainer.append($("<span>", {text: "The Earth has run out of space."}));
+    $overlayContainer.append($("<span>", {text: reason}));
     $overlayContainer.append($("<span>", {text: "But hey, at least you saved " + score + "."}));
     let $startBtn = $("<button>", {text: "Retry?"});
     $startBtn.click(function() {

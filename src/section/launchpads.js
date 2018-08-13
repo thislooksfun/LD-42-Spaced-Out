@@ -83,7 +83,7 @@ module.exports = {
   ensureCanBuild() {
     if (pad1.ship == null && pad2.ship == null && pad3.ship == null && !bank.canSpend(priceToBuildShip)) {
       // We have no ships, and not enough money to build another one
-      require("../game").end("Out of ships!");
+      require("../game").end("You, the last commercial space flight company have do not have enough money to build another ship. Thus, the no one can leave the planet and it has run out of space.");
     }
   },
 
