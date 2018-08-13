@@ -1,3 +1,7 @@
+#bank {
+  position: relative;
+}
+
 .price {
   &.earn {
     color: @color-price-earn;
@@ -9,5 +13,45 @@
   
   .na &, &.na {
     color: @color-text-disabled;
+  }
+}
+
+.cashflow {
+  
+  position: absolute;
+  
+  transition: top 1s, color 1s;
+  transition-timing-function: ease-out;
+  
+  left: 55px;
+  
+  // &.in {
+  //   color: @color-price-earn;
+  //
+  //   top: 54px;
+  //
+  //   &.animate {
+  //     top: 27px;
+  //     color: fade(@color-price-earn, 0);
+  //   }
+  // }
+  //
+  // &.out {
+  //
+  // }
+  
+  top: 27px;
+  
+  &.animate {
+    top: 0px;
+    color: fade(@color-price-cost, 0);
+  }
+  
+  &.in {
+    color: @color-price-earn;
+  }
+  
+  &.out {
+    color: @color-price-cost;
   }
 }
