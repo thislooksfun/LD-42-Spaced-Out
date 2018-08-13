@@ -42,7 +42,7 @@ module.exports = {
   ],
   
   buildElFrom(name) {
-    $("<img>", {
+    return $("<img>", {
       src: assetBasePath + name + ext,
       alt: name,
       class: "icon attribute",
