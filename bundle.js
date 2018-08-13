@@ -484,12 +484,12 @@ module.exports = {
     return $container;
   },
 
-  groups: [{ name: "cats", opts: ["none", "some"] },
-  // {name: "clouds",      opts: [ "none" , "low", "med", "high" ]}, // missing: none, med, high
-  { name: "desert", opts: ["none", "some"] }, { name: "grass", opts: ["none", "low", "med", "high"] }, { name: "moons", opts: ["none", "one", "two"] },
+  groups: [{ name: "cats", opts: ["none", "some"] }, { name: "clouds", opts: ["none", "low", "med", "high"] }, { name: "desert", opts: ["none", "some"] }, { name: "grass", opts: ["none", "low", "med", "high"] }, { name: "moons", opts: ["none", "one", "two"] },
   // {name: "rain",        opts: [ "none" , "some"               ]}, // missing: none, some
-  // {name: "rings",       opts: [ "none" , "some"               ]}, // missing: none
-  { name: "size", opts: ["small", "large"] }],
+  { name: "rings", opts: ["none", "some"] }, { name: "size", opts: ["small", "large"] },
+  // {name: "snow",        opts: [ "none" , "some"               ]}, // missing: none, some
+  // {name: "storms",      opts: [ "none" , "some"               ]}, // missing: none, some
+  { name: "temperature", opts: ["cold", "moderate", "hot"] }, { name: "trees", opts: ["none", "some"] }],
 
   buildElFrom(name) {
     return $("<img>", {
