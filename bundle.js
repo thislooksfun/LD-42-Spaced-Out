@@ -9,8 +9,8 @@ const maxAttributes = 5;
 
 const moneyScale = 5;
 const payoutMin = 1000;
-const fineMin = 250;
-const bonusMin = 250;
+const fineMin = 1500;
+const bonusMin = 1000;
 
 function dragStart(e, id) {
   $(this).addClass("dragging");
@@ -48,8 +48,8 @@ module.exports = class Person {
     // rather than `payoutMin + (payoutMin * moneyScale)`
     let ms = moneyScale - 1;
     this.payout = payoutMin + util.rand(Math.floor(ms * payoutMin * this.needs.length / maxAttributes));
-    this.fine = payoutMin + util.rand(Math.floor(ms * fineMin * this.needs.length / maxAttributes));
-    this.bonus = payoutMin + util.rand(Math.floor(ms * bonusMin * this.desires.length / maxAttributes));
+    this.fine = fineMin + util.rand(Math.floor(ms * fineMin * this.needs.length / maxAttributes));
+    this.bonus = bonusMin + util.rand(Math.floor(ms * bonusMin * this.desires.length / maxAttributes));
 
     this.$el = $("<div>", { class: "person" });
   }
@@ -406,7 +406,7 @@ module.exports = {
   begin() {
     $overlayContainer.empty();
     $overlayContainer.append($("<h1>", { text: "Spaced Out" }));
-    $overlayContainer.append($("<span>", { text: "v" + game_version }));
+    $overlayContainer.append($("<span>", { text: "v" + (window.game_version || ".dev") }));
     let $startBtn = $("<button>", { text: "Start Game" });
     $startBtn.click(function () {
       $overlay.detach();
@@ -584,9 +584,46 @@ const prettyPrint = require("../lib/util").prettyPrint;
 const startingMoney = 100000;
 
 var money = -1;
+let $bank = $("#bank");
 let $balance = $("#balance");
 function redraw() {
   $balance.text("$" + prettyPrint(money));
+}
+
+const timeBetweenFlows = 250;
+var lastFlow = 0;
+var queue = [];
+function queueCashflow($el) {
+  queue.push($el);
+
+  if (queue.length === 1) {
+    let timeSinceLastFlow = Date.now() - lastFlow;
+    if (timeSinceLastFlow >= timeBetweenFlows) {
+      animateCashflow(queue.shift());
+    } else {
+      setTimeout(function () {
+        animateCashflow(queue.shift());
+      }, timeBetweenFlows - timeSinceLastFlow);
+    }
+  }
+}
+function animateCashflow($el) {
+  lastFlow = Date.now();
+
+  $bank.append($el);
+  setTimeout(function () {
+
+    setTimeout(function () {
+      if (queue.length > 0) {
+        animateCashflow(queue.shift());
+      }
+    }, timeBetweenFlows);
+
+    $el.addClass("animate");
+    setTimeout(function () {
+      $el.remove();
+    }, 1250);
+  }, 50);
 }
 
 module.exports = {
@@ -597,10 +634,20 @@ module.exports = {
   },
 
   canSpend(amt) {
-    return money >= amt;
+    let res = money >= amt;
+    if (!res) {
+      $balance.addClass("flash");
+      setTimeout(function () {
+        $balance.removeClass("flash");
+      }, 600);
+    }
+    return res;
   },
 
   spend(cost) {
+    if (cost == 0) {
+      return;
+    }
     if (cost < 0) {
       return this.earn(-cost);
     }
@@ -608,13 +655,28 @@ module.exports = {
     if (money < 0) {
       require("../game").end("Out of money!");
     }
+
+    queueCashflow($("<span>", {
+      class: "cashflow out",
+      text: "-$" + prettyPrint(cost)
+    }));
+
     redraw();
   },
 
   earn(amount) {
+    if (amount == 0) {
+      return;
+    }
     if (amount < 0) {
       return this.spend(-amount);
     }
+
+    queueCashflow($("<span>", {
+      class: "cashflow in",
+      text: "+$" + prettyPrint(amount)
+    }));
+
     money += amount;
     redraw();
   }
@@ -779,7 +841,7 @@ const prettyPrint = require("../lib/util").prettyPrint;
 const soe = require("./spaceOnEarth");
 
 // How many people you have to save to get the hardest difficulty
-const hardestDifficultyAt = 100;
+const hardestDifficultyAt = 50;
 
 var saved = -1;
 let $saved = $("#saved");
@@ -817,7 +879,7 @@ module.exports = {
 },{"../lib/util":5,"./spaceOnEarth":11}],11:[function(require,module,exports){
 "use strict";
 
-const secondsBetweenDecrement = 2;
+const secondsBetweenDecrement = 3;
 const startingSpace = 100;
 
 var space = -1;

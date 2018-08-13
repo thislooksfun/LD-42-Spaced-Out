@@ -98,6 +98,9 @@ header {
 #lobby {
   border-left: 2px solid black;
 }
+#bank {
+  position: relative;
+}
 .price.earn {
   color: #17c161;
 }
@@ -107,6 +110,31 @@ header {
 .na .price,
 .price.na {
   color: gray;
+}
+.cashflow {
+  position: absolute;
+  transition: top 1s, color 1s;
+  transition-timing-function: ease-out;
+  left: 55px;
+  top: 27px;
+}
+.cashflow.animate {
+  top: 0px;
+  color: rgba(242, 14, 94, 0);
+}
+.cashflow.in {
+  color: #17c161;
+}
+.cashflow.out {
+  color: #f20e5e;
+}
+.flash {
+  animation: flasher 0.2s step-end infinite;
+}
+@keyframes flasher {
+  50% {
+    color: #f20e5e;
+  }
 }
 .content {
   padding: 60px 25px;
@@ -254,7 +282,7 @@ header div:nth-child(2) {
   border-bottom: 2px solid black;
   display: grid;
   grid-template-columns: calc(100% - 80px) 80px;
-  grid-template-rows: 50% 50%;
+  grid-template-rows: 20px calc(100% - 20px);
 }
 .person .needs .icon-list,
 .person .desires .icon-list {
@@ -430,7 +458,7 @@ header div:nth-child(2) {
   margin: 5px;
   margin-top: 7px;
 }
-.ship.dragged-over {
+.ship.dragged-over .content {
   background: #e0e0e0;
 }
 .ship.dragged-over .fade.down {
