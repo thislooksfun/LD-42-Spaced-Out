@@ -193,23 +193,28 @@ module.exports = class Person {
   launch() {
     console.log("Launching ship!", this);
     
-    var fines = 0;
     var bonuses = 0;
+    var fines = 0;
     
     for (let p of this.passengers) {
-      for (let n of p.needs) {
-        if (!this.hasAttr(n)) {
-          fines += p.fine;
-        }
-      }
-      
       for (let d of p.desires) {
         if (this.hasAttr(d)) {
           bonuses += p.bonus;
         }
       }
+      
+      for (let n of p.needs) {
+        if (!this.hasAttr(n)) {
+          fines += p.fine;
+        }
+      }
     }
     
+    // Process bonuses first just in case the fines would put the balance below zero.
+    // For example: say the balance is $300, and we need to process $400 in fines and $700 in bonuses.
+    // If we process the fines first, the balance would go to -$100, and the game would end before the +$700
+    // in bonuses is added.
+    // This way around we only trigger the end-game condition if the final sum is invalid.
     bank.earn(bonuses);
     bank.spend(fines);
     
