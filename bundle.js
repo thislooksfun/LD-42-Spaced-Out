@@ -5,7 +5,7 @@ const attributes = require("../lib/attributes");
 const util = require("../lib/util");
 const diffScale = require("../section/score").diffScale;
 
-const maxAttributes = 5;
+const maxAttributes = 4;
 
 const moneyScale = 5;
 const payoutMin = 1000;
@@ -453,7 +453,7 @@ module.exports = {
     $overlayContainer.empty();
     $overlayContainer.append($("<h1>", { text: "Game Over" }));
     let score = require("./section/score").format();
-    $overlayContainer.append($("<span>", { text: "The Earth has run out of space." }));
+    $overlayContainer.append($("<span>", { text: reason }));
     $overlayContainer.append($("<span>", { text: "But hey, at least you saved " + score + "." }));
     let $startBtn = $("<button>", { text: "Retry?" });
     $startBtn.click(function () {
@@ -677,7 +677,7 @@ module.exports = {
     }
     money -= cost;
     if (money < 0) {
-      require("../game").end("Out of money!");
+      require("../game").end("You, the last commercial space flight company have run out of money. Thus, the no one can leave the planet and it has run out of space.");
     }
 
     queueCashflow($("<span>", {
@@ -790,7 +790,7 @@ module.exports = {
   ensureCanBuild() {
     if (pad1.ship == null && pad2.ship == null && pad3.ship == null && !bank.canSpend(priceToBuildShip)) {
       // We have no ships, and not enough money to build another one
-      require("../game").end("Out of ships!");
+      require("../game").end("You, the last commercial space flight company have do not have enough money to build another ship. Thus, the no one can leave the planet and it has run out of space.");
     }
   },
 
@@ -928,7 +928,7 @@ module.exports = {
     space--;
 
     if (space <= 0) {
-      require("../game").end("Out of space!");
+      require("../game").end("The Earth has run out of space.");
     }
 
     this.redraw();
