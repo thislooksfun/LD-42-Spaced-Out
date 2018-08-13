@@ -6,6 +6,5 @@ $(function() {
     return Date.now() - start;
   };
   
-  // TODO: make a "start" button?
   require("./game").begin();
 });

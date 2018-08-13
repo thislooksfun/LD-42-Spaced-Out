@@ -31,7 +31,6 @@ module.exports = {
     people[newPerson.id] = newPerson;
   },
   
-  // TODO: Call this when a person is dropped on a ship
   get(id) {
     return people[id];
   },

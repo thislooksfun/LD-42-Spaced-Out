@@ -84,7 +84,6 @@ module.exports = class Person {
       passenger.$el.data("removeOnDragEnd", true);
       passenger.$el.trigger("dragend");
       
-      // TODO: Only redraw "content", not everything.
       _this.redrawContent();
     });
   }
@@ -170,7 +169,6 @@ module.exports = class Person {
   }
   
   redrawContent() {
-    // TODO: Redraw just the 'content' div
     this.$content.empty();
     
     for (let p of this.passengers) {

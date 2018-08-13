@@ -6,7 +6,6 @@ var sections = [
   require("./section/lobby"),
   require("./section/score"),
   require("./section/spaceOnEarth"),
-  // TODO: More sections here
 ];
 
 
@@ -69,6 +68,5 @@ module.exports = {
     $overlayContainer.append($startBtn);
     
     $("body").append($overlay);
-    // TODO: Display end-of-game screen
   }
 };
