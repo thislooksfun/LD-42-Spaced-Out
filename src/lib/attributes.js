@@ -24,17 +24,17 @@ module.exports = {
   },
   
   groups: [
-    {name: "clouds", opts: [ "none", "low", "med", "high" ]},
-    {name: "grass",  opts: [ "none", "low", "med", "high" ]},
-    {name: "desert", opts: [ "none", "some" ]},
-    {name: "cats",   opts: [ "none", "some" ]},
-    {name: "temperature", opts: [ "cold", "moderate", "hot" ]},
-    {name: "snow", opts: [ "none", "some" ]},
-    {name: "rain", opts: [ "none", "some" ]},
-    {name: "storms", opts: [ "none", "some" ]},
-    {name: "moons", opts: [ "none", "one", "two" ]},
-    {name: "rings", opts: [ "none", "some" ]},
-    {name: "planet-size", opts: [ "small", "large" ]},
+    {name: "cats",        opts: [ "none" , "some"               ]},
+    {name: "clouds",      opts: [ "none" , "low", "med", "high" ]},
+    {name: "desert",      opts: [ "none" , "some"               ]},
+    {name: "grass",       opts: [ "none" , "low", "med", "high" ]},
+    {name: "moons",       opts: [ "none" , "one", "two"         ]},
+    {name: "rain",        opts: [ "none" , "some"               ]},
+    {name: "rings",       opts: [ "none" , "some"               ]},
+    {name: "size",        opts: [ "small", "large"              ]},
+    {name: "snow",        opts: [ "none" , "some"               ]},
+    {name: "storms",      opts: [ "none" , "some"               ]},
+    {name: "temperature", opts: [ "cold" , "moderate", "hot"    ]},
   ],
   
 };
