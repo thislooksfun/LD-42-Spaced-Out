@@ -35,6 +35,7 @@ module.exports = {
     {name: "snow",        opts: [ "none" , "some"               ]},
     {name: "storms",      opts: [ "none" , "some"               ]},
     {name: "temperature", opts: [ "cold" , "moderate", "hot"    ]},
+    {name: "trees",       opts: [ "none" , "some"               ]},
   ],
   
 };
