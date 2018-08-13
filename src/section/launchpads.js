@@ -10,9 +10,9 @@ const priceToBuildShip = 5000;
 const priceToBuyPad = 10000;
 
 
-let pad1 = { ship: null, bought: true,  $title: $("#pad1 h1"), $content: $("#pad1 .content") };
-let pad2 = { ship: null, bought: false, $title: $("#pad1 h1"), $content: $("#pad2 .content") };
-let pad3 = { ship: null, bought: false, $title: $("#pad1 h1"), $content: $("#pad3 .content") };
+let pad1 = { ship: null, bought: true,  $el: $("#pad1"), $content: $("#pad1 .content") };
+let pad2 = { ship: null, bought: false, $el: $("#pad2"), $content: $("#pad2 .content") };
+let pad3 = { ship: null, bought: false, $el: $("#pad3"), $content: $("#pad3 .content") };
 
 
 module.exports = {
@@ -40,11 +40,14 @@ module.exports = {
   redraw(pad) {
     pad.$content.empty();
     if (pad.ship != null) {
+      pad.$el.removeClass("locked empty");
       pad.$content.append(pad.ship.toHTML());
-      pad.ship.setupDragTarget(this.redraw.bind(this, pad));
+      pad.ship.setupDragTarget();
     } else if (pad.bought) {
-      // TODO: Render empty pad + 'build' button
-      pad.$content.append($("<span>", {text: "Empty"}));
+      pad.$el.removeClass("locked");
+      pad.$el.addClass("empty");
+      
+      pad.$content.append($("<h2>", {text: "Empty"}));
       let buildBtn = $("<button>", {class: "build", text: "Build ($" + prettyPrint(priceToBuildShip) + ")"});
       let _this = this;
       buildBtn.click(function() {
@@ -60,8 +63,10 @@ module.exports = {
       });
       pad.$content.append(buildBtn);
     } else {
-      // TODO: Render locked pad + 'buy' button
-      pad.$content.append($("<span>", {text: "Locked"}));
+      pad.$el.removeClass("empty");
+      pad.$el.addClass("locked");
+      
+      pad.$content.append($("<h2>", {text: "Locked"}));
       let buyBtn = $("<button>", {class: "unlock", text: "Unlock ($" + prettyPrint(priceToBuyPad) + ")"});
       let _this = this;
       buyBtn.click(function() {

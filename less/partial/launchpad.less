@@ -1,7 +1,35 @@
 #launchpads {
   
+  display: grid;
+  grid-template-columns: 33.4% 33.3% 33.3%;
+  grid-template-rows: auto;
+  
   .launchpad {
     padding: 20px;
+    
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: 30px auto;
+    
+    &.locked, &.empty {
+      h2 {
+        font-size: 15pt;
+      }
+      
+      .content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+    }
+    
+    &.locked {
+      background: @background-pad-locked;
+    }
+    
+    &.empty {
+      background: @background-pad-empty;
+    }
   }
   
 }

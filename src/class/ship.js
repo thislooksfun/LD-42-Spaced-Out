@@ -42,11 +42,12 @@ module.exports = class Person {
   addPassenger(person) {
     if (this.passengers.length >= maxPassengers) { return false; }
     this.passengers.push(person);
+    person.inShip = true;
     
     return true;
   }
   
-  setupDragTarget(redraw) {
+  setupDragTarget() {
     this.$el.on("dragover",  dragOver);
     this.$el.on("dragenter", dragEnter);
     this.$el.on("dragleave", dragLeave);
@@ -72,7 +73,7 @@ module.exports = class Person {
       passenger.$el.data("removeOnDragEnd", true);
       passenger.$el.trigger("dragend");
       
-      redraw();
+      _this._redraw();
     });
   }
   

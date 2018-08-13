@@ -45,6 +45,7 @@ module.exports = class Person {
     
     this.needs   = attributes.random(util.rand(max));
     this.desires = attributes.random(util.rand(max), this.needs.unused);
+    this.inShip  = false;
     
     
     // Subtract one so that the max is `payoutMin + (payoutMin * (moneyScale-1)) = payoutMin * moneyScale`
