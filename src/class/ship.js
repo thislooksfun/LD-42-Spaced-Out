@@ -144,6 +144,10 @@ module.exports = class Person {
     
     let $addBtn = $("<button>", {class: "add", text: "Add"});
     $addBtn.click(this.displayPalette.bind(this));
+    if (this.attributes.length === maxAttributes) {
+      paletteOpen = false;
+      $addBtn.attr("disabled", true);
+    }
     
     if (paletteOpen) {
       this.displayPalette();
