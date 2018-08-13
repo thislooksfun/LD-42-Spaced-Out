@@ -170,7 +170,9 @@
   }
   
   &.dragged-over {
-    background: @color-drag-over;
+    .content {
+      background: @color-drag-over;
+    }
     
     .fade.down {
       background: linear-gradient(@color-drag-over, fade(@color-drag-over, 0));
