@@ -5,7 +5,7 @@ const util = require("../lib/util");
 const diffScale = require("../section/score").diffScale;
 
 
-const maxAttributes = 5;
+const maxAttributes = 4;
 
 const moneyScale = 5;
 const payoutMin  = 1000;
