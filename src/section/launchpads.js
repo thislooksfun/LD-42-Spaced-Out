@@ -53,7 +53,7 @@ module.exports = {
           // Maybe flash balance?
           return;
         }
-        bank.purchase(priceToBuildShip);
+        bank.spend(priceToBuildShip);
         
         pad.ship = new Ship(pad, _this.redraw.bind(_this, pad));
         _this.redraw(pad);
@@ -70,7 +70,7 @@ module.exports = {
           // Maybe flash balance?
           return;
         }
-        bank.purchase(priceToBuyPad);
+        bank.spend(priceToBuyPad);
         
         pad.bought = true;
         _this.redraw(pad);

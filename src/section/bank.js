@@ -23,7 +23,10 @@ module.exports = {
     return money >= amt;
   },
   
-  purchase(cost) {
+  spend(cost) {
+    if (cost < 0) {
+      return this.earn(-cost);
+    }
     money -= cost;
     if (money < 0) {
       game.end("Out of money!");
@@ -31,7 +34,10 @@ module.exports = {
     redraw();
   },
   
-  income(amount) {
+  earn(amount) {
+    if (amount < 0) {
+      return this.spend(-amount);
+    }
     money += amount;
     redraw();
   },
