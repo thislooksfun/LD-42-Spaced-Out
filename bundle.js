@@ -37,8 +37,7 @@ module.exports = class Person {
   constructor() {
     this.id = util.uuidv4();
 
-    // let scaledAttrMax = Math.floor(1 + ((maxAttributes - 1) * diffScale()));
-    let scaledAttrMax = Math.floor(1 + (maxAttributes - 1));
+    let scaledAttrMax = Math.floor(1 + (maxAttributes - 1) * diffScale());
     let max = Math.min(scaledAttrMax, maxAttributes);
 
     this.needs = attributes.random(util.rand(max));
@@ -94,7 +93,9 @@ module.exports = class Person {
     let $money = $("<div>", {
       class: "money"
     });
-    $money.append($("<span>", { class: "payout", text: "Payout: $" + util.prettyPrint(this.payout) }));
+    if (!this.inShip) {
+      $money.append($("<span>", { class: "payout", text: "Payout: $" + util.prettyPrint(this.payout) }));
+    }
     let $fine = $("<span>", { class: "fine", text: "Fine: $" + util.prettyPrint(this.fine) });
     if (this.needs.length === 0) {
       $fine.addClass("na");
@@ -160,6 +161,7 @@ module.exports = class Person {
     }
     this.passengers.push(person);
     person.inShip = true;
+    bank.earn(person.payout);
 
     return true;
   }
@@ -221,16 +223,10 @@ module.exports = class Person {
   }
 
   launch() {
-    // TODO:
     console.log("Launching ship!", this.passengers);
 
-    let sum = 0;
-    for (let p of this.passengers) {
-      sum += p.payout;
-    }
-    bank.earn(sum);
-
     // TODO: Handle fines and bonuses
+
 
     this._pad.ship = null;
     this._redraw();
