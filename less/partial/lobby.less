@@ -1,6 +1,4 @@
 #lobby {
-  @content-padding: 25px;
-  @fade-height: 60px;
   
   padding-top: 20px;
   
@@ -11,39 +9,10 @@
   grid-template-columns: auto;
   grid-template-rows: 30px auto;
   
-  .content {
+  
+  .fade, .content {
     grid-column: 1;
     grid-row: 2;
-    
-    padding: @fade-height @content-padding;
-    
-    position: relative;
-    max-height: calc(100% - (@content-padding * 2));
-    overflow: scroll;
-    
-    & > :last-child {
-      margin-bottom: @fade-height;
-    }
   }
   
-  .fade {
-    grid-column: 1;
-    grid-row: 2;
-    
-    position: absolute;
-    left: @content-padding;
-    
-    height: @fade-height;
-    width: calc(100% - @content-padding*2);
-    
-    &.up {
-      bottom: 0;
-      background: linear-gradient(#fff0, #ffff);
-    }
-    
-    &.down {
-      top: 0;
-      background: linear-gradient(#ffff, #fff0);
-    }
-  }
 }

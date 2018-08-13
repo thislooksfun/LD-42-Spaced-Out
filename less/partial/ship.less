@@ -1,9 +1,37 @@
 .ship {
   
-  padding: 5px;
+  @button-height: 50px;
+  @button-margin: 10px;
+  
+  position: relative;
+  
+  height: 100%;
+  
+  // This is to make up for the 'lobby' column having an extra 2px of border
+  padding-left: 2px;
+  
+  display: grid;
+  
+  grid-template-columns: auto;
+  grid-template-rows: auto (@button-height + @button-margin * 2);
+  
+  .fade, .content {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  .fade.up {
+    bottom: @button-height + @button-margin * 2;
+  }
+  
+  button {
+    grid-column: 1;
+    grid-row: 2;
+    
+    margin: @button-margin;
+  }
   
   .person, .slot {
-    height: 80px;
+    height: 150px;
     
     pointer-events: none;
   }
@@ -16,5 +44,25 @@
   
   &.dragged-over {
     background: @color-drag-over;
+    
+    .fade.down {
+      background: linear-gradient(@color-drag-over, fade(@color-drag-over, 0));
+    }
+    .fade.up {
+      background: linear-gradient(fade(@color-drag-over, 0), @color-drag-over);
+    }
+  }
+  
+  .capacity {
+    grid-column: 1;
+    grid-row: 1;
+    
+    position: absolute;
+    top: 5px;
+    
+    display: block;
+    width: 100%;
+    
+    font-size: 14pt;
   }
 }

@@ -28,12 +28,12 @@ function dragLeave() {
 
 module.exports = class Person {
   
-  constructor(pad, redraw) {
+  constructor(pad, redrawPad) {
     this.attributes = attributes.random(1);
     this.passengers = [];
     
     this._pad = pad;
-    this._redraw = redraw;
+    this._redrawPad = redrawPad;
     
     this.$el = $("<div>", {
       class: "ship"
@@ -45,6 +45,14 @@ module.exports = class Person {
     this.passengers.push(person);
     person.inShip = true;
     bank.earn(person.payout);
+    
+    if (this.passengers.length >= maxPassengers) {
+      console.log("Full!");
+      this.clearDragTarget();
+    }
+    
+    this.redrawCapacity();
+    this.$launchBtn.removeAttr("disabled");
     
     return true;
   }
@@ -75,42 +83,70 @@ module.exports = class Person {
       passenger.$el.data("removeOnDragEnd", true);
       passenger.$el.trigger("dragend");
       
-      _this._redraw();
+      // TODO: Only redraw "content", not everything.
+      _this.redrawContent();
     });
+  }
+  
+  clearDragTarget() {
+    console.log("Clearing drag targets...", this.$el);
+    this.$el.off("dragover");
+    this.$el.off("dragenter");
+    this.$el.off("dragleave");
+    this.$el.off("drop");
   }
   
   toHTML() {
     this.$el.empty();
     
-    for (let p of this.passengers) {
-      this.$el.append(p.toHTML());
-    }
-    for (var i = 0; i < maxPassengers - this.passengers.length; i++) {
-      this.$el.append($("<div>", {class: "slot empty"}));
-    }
+    this.$content = $("<div>", {class: "content"});
+    this.redrawContent();
+    this.$el.append(this.$content);
     
-    let $launchBtn = $("<button>", {class: "launch", text: "Launch!"});
-    $launchBtn.click(this.launch.bind(this));
+    this.$el.append($("<div>", {class: "fade down"}));
+    this.$el.append($("<div>", {class: "fade up"}));
+    
+    this.$launchBtn = $("<button>", {class: "launch", text: "Launch!"});
+    this.$launchBtn.click(this.launch.bind(this));
     
     if (this.passengers.length == 0) {
-      $launchBtn.prop("disabled", true);
+      this.$launchBtn.prop("disabled", true);
     }
     
-    this.$el.append($launchBtn);
+    this.$el.append(this.$launchBtn);
+    
+    this.$capacity = $("<span>", {class: "capacity", text: "??/??"});
+    this.$el.append(this.$capacity);
+    this.redrawCapacity();
     
     return this.$el;
   }
   
+  redrawCapacity() {
+    this.$capacity.text(this.passengers.length + "/" + maxPassengers);
+  }
+  
+  redrawContent() {
+    // TODO: Redraw just the 'content' div
+    this.$content.empty();
+    
+    for (let p of this.passengers) {
+      this.$content.append(p.toHTML());
+    }
+    for (var i = 0; i < maxPassengers - this.passengers.length; i++) {
+      this.$content.append($("<div>", {class: "slot empty"}));
+    }
+  }
+  
   launch() {
     console.log("Launching ship!", this.passengers);
-    
     
     // TODO: Handle fines and bonuses
     
     score.save(this.passengers.length);
     
     this._pad.ship = null;
-    this._redraw();
+    this._redrawPad();
   }
   
 };

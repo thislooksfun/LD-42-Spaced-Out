@@ -1,0 +1,31 @@
+@content-padding: 25px;
+@fade-height: 60px;
+
+.content {
+  padding: @fade-height @content-padding;
+  
+  position: relative;
+  max-height: calc(100% - (@content-padding * 2));
+  overflow: scroll;
+  
+  & > :last-child {
+    margin-bottom: @fade-height;
+  }
+}
+
+.fade {
+  position: absolute;
+  left: @content-padding;
+  
+  height: @fade-height;
+  width: calc(100% - @content-padding*2);
+  
+  &.down {
+    top: 0;
+    background: linear-gradient(@color-background, fade(@color-background, 0));
+  }
+  &.up {
+    bottom: 0;
+    background: linear-gradient(fade(@color-background, 0), @color-background);
+  }
+}
