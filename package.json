@@ -21,6 +21,7 @@
     "babel-loader": "^7.1.5",
     "babelify": "^8.0.0",
     "browserify": "^16.2.2",
+    "del": "^3.0.0",
     "gulp": "^3.9.1",
     "gulp-batch": "^1.0.5",
     "gulp-connect": "^5.5.0",
@@ -29,6 +30,7 @@
     "gulp-sourcemaps": "^2.6.4",
     "gulp-watch": "^5.0.1",
     "gulplog": "^1.0.0",
+    "less-plugin-glob": "^2.0.2",
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^2.0.0"
   },

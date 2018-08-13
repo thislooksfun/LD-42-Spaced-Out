@@ -1,0 +1,20 @@
+.ship {
+  
+  padding: 5px;
+  
+  .person, .slot {
+    height: 80px;
+    
+    pointer-events: none;
+  }
+  .slot {
+    border-bottom: 2px solid grey;
+    padding: 5px;
+    margin: 5px;
+    margin-top: 7px;  // .person has 2px of top border
+  }
+  
+  &.dragged-over {
+    background: @color-drag-over;
+  }
+}

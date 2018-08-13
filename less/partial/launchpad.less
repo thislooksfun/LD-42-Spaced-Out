@@ -1,41 +1,35 @@
-.ship {
-  display: none;
-  width: 1em;
-  height: 1em;
-  margin: 1em;
-  background-color: coral;
-}
-
-.ship.built {
-  display: block;
-}
-
 #launchpads {
+  
+  display: grid;
+  grid-template-columns: 33.4% 33.3% 33.3%;
+  grid-template-rows: auto;
   
   .launchpad {
     padding: 20px;
     
-    &.dragged-over {
-      background: @color-drag-over;
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: 30px auto;
+    
+    &.locked, &.empty {
+      h2 {
+        font-size: 15pt;
+      }
+      
+      .content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+    }
+    
+    &.locked {
+      background: @background-pad-locked;
+    }
+    
+    &.empty {
+      background: @background-pad-empty;
     }
   }
   
-  // .launchpad:nth-child(1) {
-  //   background: #600;
-  //   &.dragged-over {
-  //     background: #a00;
-  //   }
-  // }
-  // .launchpad:nth-child(2) {
-  //   background: #060;
-  //   &.dragged-over {
-  //     background: #0a0;
-  //   }
-  // }
-  // .launchpad:nth-child(3) {
-  //   background: #006;
-  //   &.dragged-over {
-  //     background: #00a;
-  //   }
-  // }
 }

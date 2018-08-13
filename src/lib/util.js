@@ -14,4 +14,8 @@ module.exports = {
       (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
     );
   },
+  
+  prettyPrint(num) {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  },
 };

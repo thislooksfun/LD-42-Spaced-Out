@@ -1,0 +1,75 @@
+@grid-line: 2px solid black;
+
+body {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  
+  margin: 0;
+  padding: 0;
+  
+  display: grid;
+  
+  grid-template-columns: 0% auto 0%;
+  grid-template-rows: auto;
+  
+  @media(min-width: 1200px) {
+    grid-template-columns: auto 1200px auto;
+    grid-template-rows: auto;
+  }
+}
+
+#play-area {
+  position: relative;
+  
+  grid-column: 2;
+  grid-row: 1;
+  
+  width: 100%;
+  height: 100%;
+  // max-width: 1200px;
+  // margin: 0 auto;
+  
+  background-color: @color-background;
+  display: grid;
+  grid-template-columns: 25% 75%;
+  grid-template-rows: 75px auto;
+}
+
+// Top row
+#population {
+  grid-column: 1;
+  grid-row: 1;
+  
+  border-bottom: @grid-line;
+}
+
+header {
+  grid-column: 2;
+  
+  border-bottom: @grid-line;
+  border-right: @grid-line;
+  
+}
+
+
+// Bottom row
+#lobby {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+#launchpads {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+// Columns
+#population, #lobby, .launchpad {
+  border-right: @grid-line;
+}
+#population, #lobby {
+  border-left: @grid-line;
+}

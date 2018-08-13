@@ -2,16 +2,18 @@
 
 /* eslint-env node */
 
+
 const babelify   = require("babelify");
 const batch      = require("gulp-batch");
 const browserify = require("browserify");
 const buffer     = require("vinyl-buffer");
+const del        = require("del");
 const gulp       = require("gulp");
 const less       = require("gulp-less");
 const plumber    = require("gulp-plumber");
 const source     = require("vinyl-source-stream");
 const sourcemaps = require("gulp-sourcemaps");
-const uglify     = require("gulp-uglifyes");
+// const uglify     = require("gulp-uglifyes");
 const watch      = require("gulp-watch");
 
 
@@ -48,13 +50,18 @@ function processNext() {
 }
 
 
-gulp.task("default", ["assets", "html", "less", "javascript"]);
+gulp.task("default", ["clean", "assets", "html", "less", "javascript"]);
 
 
 gulp.task("assets", function() {
   return gulp.src("./assets/**/*")
     .pipe(plumber(log))
     .pipe(gulp.dest("./build/assets/"));
+});
+
+
+gulp.task("clean", function() {
+  del("build");
 });
 
 
@@ -68,9 +75,12 @@ gulp.task("html", function() {
 gulp.task("less", function() {
   return gulp.src("./less/main.less")
     .pipe(plumber(log))
+    .pipe(sourcemaps.init({loadMaps: true}))
     .pipe(less({
-      paths: [ "./less/main.less" ]
+      paths: [ "./less/main.less" ],
+      plugins: [ require("less-plugin-glob") ]
     }))
+    .pipe(sourcemaps.write("./maps"))
     .pipe(gulp.dest("./build/"));
 });
 
@@ -93,12 +103,12 @@ gulp.task("javascript", function() {
     .pipe(buffer())
     .pipe(sourcemaps.init({loadMaps: true}))
     // .pipe(uglify())
-    .pipe(sourcemaps.write("./"))
+    .pipe(sourcemaps.write("./maps"))
     .pipe(gulp.dest("./build/"));
 });
 
 
-gulp.task("watch", function() {
+gulp.task("watch", ["clean"], function() {
   watch("assets/**/*", { ignoreInitial: false }, batch(function (events, done) {
     enqueue("assets", done);
   }));

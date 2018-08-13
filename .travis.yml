@@ -1,22 +1,22 @@
 language: node_js
 node_js:
-- '10'
+  - '10'
 branches:
   only:
-  - master
+    - master
 env:
   global:
-  - secure: bLrfqgiwG+FtZyEVAr5qubL6IHgUUyjXjk9wTC6r/Zxc3Al+oulAUTSEPDgTuiUPm3zuGqae5yWMJHN2Tu2bCjJ/w73i7Tege/3H3vny6+1vvpmyR0mwEQeaFV9ajmeq32LWfDmt66pdZnSXFHoETOP9taJxrZH4dLrLXgEFYCbKwNTs11NzM5y2GQ51n2tDTkJFS2nUsmVYsewbLjrM3KwABpkswdFn690DVjQk+HFEHlsfUAMieM+j3bQjGzwGPPFgVDa8V6xn+zIYfeXOMSJwUQ640xrNddv0qubT7T4ZYd1NCVWWV3AzRZGAWBkIVcH3GetWRBXcfqa1n/UVmQ3ASuAUtC0nsIsr8i1sczgi1T407za8nhK85l93YGLhU/X0XcaHVII1CNnWnw1wkBIxgZGdcCzKbn9bx2jjYhL3vV8dk5WwNLU/D+2VERgseOX343ESyzSrHInjfQPRB6BSOLNZ/0plFbqqodSR5N9U/LHYunZRqmC7Bm3Eryc0JIGU4bm09iUe3zkSUhEWZFfNLLpXgVRyyVZMxVe9JHRTkQzD3WUovY7uHwn2yPETHCQcHmPXioOfTavJpfwAR2LgNOVkyZzLQI2GWp8hBDYB59Eo2P+i43KSdzlZY6OHh4RSz2kAaoLyaLZVhRmm2xHMCv4a65omxj3JaYDg/Vk=
+    - secure: bLrfqgiwG+FtZyEVAr5qubL6IHgUUyjXjk9wTC6r/Zxc3Al+oulAUTSEPDgTuiUPm3zuGqae5yWMJHN2Tu2bCjJ/w73i7Tege/3H3vny6+1vvpmyR0mwEQeaFV9ajmeq32LWfDmt66pdZnSXFHoETOP9taJxrZH4dLrLXgEFYCbKwNTs11NzM5y2GQ51n2tDTkJFS2nUsmVYsewbLjrM3KwABpkswdFn690DVjQk+HFEHlsfUAMieM+j3bQjGzwGPPFgVDa8V6xn+zIYfeXOMSJwUQ640xrNddv0qubT7T4ZYd1NCVWWV3AzRZGAWBkIVcH3GetWRBXcfqa1n/UVmQ3ASuAUtC0nsIsr8i1sczgi1T407za8nhK85l93YGLhU/X0XcaHVII1CNnWnw1wkBIxgZGdcCzKbn9bx2jjYhL3vV8dk5WwNLU/D+2VERgseOX343ESyzSrHInjfQPRB6BSOLNZ/0plFbqqodSR5N9U/LHYunZRqmC7Bm3Eryc0JIGU4bm09iUe3zkSUhEWZFfNLLpXgVRyyVZMxVe9JHRTkQzD3WUovY7uHwn2yPETHCQcHmPXioOfTavJpfwAR2LgNOVkyZzLQI2GWp8hBDYB59Eo2P+i43KSdzlZY6OHh4RSz2kAaoLyaLZVhRmm2xHMCv4a65omxj3JaYDg/Vk=
 script: gulp
 after_success:
-- git clone "https://github.com/thislooksfun/ld-f-2018-Spaced_Out.git" ../staging
-- cp -a ./build/. ../staging/
-- cp package.json ../staging/
-- cd ../staging
-- git config user.email 34430684+tlfbot@users.noreply.github.com
-- git config user.name tlfbot
-- ./version inc build
-- git add -A
-- git status -s
-- git commit -m "Generated build $(./version) at $(date +%s)"
-- git push "https://${GHTOKEN}@github.com/thislooksfun/ld-f-2018-Spaced_Out.git" master > /dev/null 2>&1
+  - git clone -b gh-pages "https://github.com/${TRAVIS_REPO_SLUG}.git" ../staging
+  - cp -a ./build/. ../staging/
+  - cp package.json ../staging/
+  - cd ../staging
+  - git config user.email 34430684+tlfbot@users.noreply.github.com
+  - git config user.name tlfbot
+  - ./version inc build
+  - git add -A
+  - git status -s
+  - git commit -m "Generated build $(./version) at $(date +%s)"
+  - git push "https://${GHTOKEN}@github.com/${TRAVIS_REPO_SLUG}.git" gh-pages > /dev/null 2>&1

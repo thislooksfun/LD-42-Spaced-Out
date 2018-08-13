@@ -2,18 +2,22 @@
 
 const Person = require("../class/person");
 
-const newPersonInterval = 5;
+const newPersonInterval = 2.5;
 const startingPeople = 5;
 const maxPeople = 10;
 
-var people = [];
+var count = 0;
+var people = {};
 
-let $lobby = $("#lobby");
-let $header = $lobby.children("h1");
+let $lobby = $("#lobby .content");
+let $header = $("#lobby h1");
 
 module.exports = {
   setup() {
     // TODO
+  },
+  
+  start() {
     this._timer = setInterval(this.addNew.bind(this), newPersonInterval * 1000);
     
     for (var i = 0; i < startingPeople; i++) {
@@ -26,18 +30,28 @@ module.exports = {
   },
   
   addNew() {
-    if (people.length < maxPeople) {
+    if (count < maxPeople) {
       let newPerson = new Person();
-      people.push(newPerson);
-      $lobby.append(newPerson.asHTML());
+      $lobby.append(newPerson.toHTML());
+      newPerson.setupDragging();
+      people[newPerson.id] = newPerson;
+      count++;
     }
-    $header.text("Lobby (" + people.length + "/" + maxPeople + ")");
+    $header.text("Lobby (" + count + "/" + maxPeople + ")");
   },
   
-  remove(at) {
-    $lobby.children(".person:nth-child(" + at + ")").remove();
-    let person = people.splice(at, 1);
-    $header.text("Lobby (" + people.length + "/" + maxPeople + ")");
+  // TODO: Call this when a person is dropped on a ship
+  get(id) {
+    return people[id];
+  },
+  
+  remove(id) {
+    let person = people[id];
+    delete people[id];
+    count--;
+    
+    person.$el.detach();
+    $header.text("Lobby (" + count + "/" + maxPeople + ")");
     return person;
   },
   
@@ -45,7 +59,7 @@ module.exports = {
     $lobby.empty();
     
     for (let person of people) {
-      $lobby.append(person.asHTML());
+      $lobby.append(person.toHTML());
     }
   },
 };
