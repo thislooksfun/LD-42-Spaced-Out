@@ -6,7 +6,7 @@
   
   display: grid;
   
-  grid-template-columns: auto;
+  grid-template-columns: 100%;
   grid-template-rows: 50px 50px 40px;
   grid-gap: 5px;
   // total internal height: 150px;
@@ -21,8 +21,8 @@
     border-bottom: @grid-line;
     
     display: grid;
-    grid-template-columns: auto auto;
-    grid-template-rows: auto auto;
+    grid-template-columns: calc(100% - 80px) 80px;
+    grid-template-rows: 50% 50%;
     
     .icon-list {
       grid-column: 1;
@@ -55,8 +55,8 @@
   .face-and-ticket {
     display: grid;
     
-    grid-template-columns: auto auto;
-    grid-template-rows: auto;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 100%;
     
     .face {
       width: 40px;
