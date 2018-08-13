@@ -10,44 +10,55 @@
   
   grid-template-columns: auto;
   // grid-template-rows: 25% 25% 50%;
-  grid-template-rows: 25px 25px 40px;
+  // grid-template-rows: 25px 25px 40px;
+  grid-template-rows: 50px 50px 40px;
+  grid-gap: 5px;
   
   &.dragging {
     opacity: 0.4;
   }
   
-  img {
-    width: 25px;
-    height: $width;
-  }
   
-  .money {
+  .needs, .desires {
+    text-align: left;
+    border-bottom: @grid-line;
+    
     display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto;
     
-    grid-template-columns: 50% 50%;
-    grid-template-rows: 50% 50%;
-    
-    text-align: center;
-    
-    span {
-      display: block;
+    .icon-list {
+      grid-column: 1;
+      grid-row: 2;
       
-      &.payout {
-        grid-column: 1 e('/') 3;
-        grid-row: 1;
-      }
-      &.fine {
-        grid-column: 1;
-        grid-row: 2;
-      }
-      &.bonus {
-        grid-column: 2;
-        grid-row: 2;
-      }
-      
-      &.na {
-        color: @color-text-disabled;
+      img.icon.attribute {
+        width: 25px;
+        height: $width;
       }
     }
+    
+    .fine, .bonus {
+      grid-column: 2;
+      grid-row: 2;
+      
+      font-size: 10pt;
+      
+      text-align: right;
+    }
+  }
+  
+  .face-and-price {
+    display: grid;
+    
+    grid-template-columns: auto auto;
+    grid-template-rows: auto;
+    
+    .face {
+      // TODO?
+    }
+  }
+  
+  .na {
+    color: @color-text-disabled;
   }
 }
