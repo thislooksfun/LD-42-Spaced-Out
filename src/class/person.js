@@ -39,8 +39,7 @@ module.exports = class Person {
   constructor() {
     this.id = util.uuidv4();
     
-    // let scaledAttrMax = Math.floor(1 + ((maxAttributes - 1) * diffScale()));
-    let scaledAttrMax = Math.floor(1 + ((maxAttributes - 1)));
+    let scaledAttrMax = Math.floor(1 + ((maxAttributes - 1) * diffScale()));
     let max = Math.min(scaledAttrMax, maxAttributes);
     
     this.needs   = attributes.random(util.rand(max));
