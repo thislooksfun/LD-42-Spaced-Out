@@ -191,6 +191,13 @@ module.exports = class Person {
   }
   
   launch() {
+    if (this.attributes.length < maxAttributes) {
+      let missing = maxAttributes - this.attributes.length;
+      let fromList = attributes.allExcept(this.attributes);
+      let rand = attributes.random(missing, fromList);
+      this.attributes = this.attributes.concat(rand);
+    }
+    
     console.log("Launching ship!", this);
     
     var bonuses = 0;

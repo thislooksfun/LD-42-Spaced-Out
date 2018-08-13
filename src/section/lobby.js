@@ -10,7 +10,8 @@ let $lobby = $("#lobby .content");
 
 module.exports = {
   setup() {
-    // TODO
+    people = {};
+    $lobby.empty();
   },
   
   start() {

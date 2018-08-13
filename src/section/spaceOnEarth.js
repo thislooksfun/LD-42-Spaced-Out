@@ -1,13 +1,14 @@
 "use strict";
 
 const secondsBetweenDecrement = 2;
-var space = 100;
-// var space = 10;
+const startingSpace = 100;
+
+var space = -1;
 
 module.exports = {
   
   setup() {
-    // TODO
+    space = startingSpace;
   },
   
   start() {
