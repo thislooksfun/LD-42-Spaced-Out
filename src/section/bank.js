@@ -57,7 +57,14 @@ module.exports = {
   },
   
   canSpend(amt) {
-    return money >= amt;
+    let res = money >= amt;
+    if (!res) {
+      $balance.addClass("flash");
+      setTimeout(function() {
+        $balance.removeClass("flash");
+      }, 600);
+    }
+    return res;
   },
   
   spend(cost) {
