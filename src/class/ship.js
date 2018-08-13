@@ -181,10 +181,37 @@ module.exports = class Person {
     }
   }
   
+  hasAttr(a) {
+    for (let at of this.attributes) {
+      if (at === a) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
   launch() {
     console.log("Launching ship!", this);
     
-    // TODO: Handle fines and bonuses
+    var fines = 0;
+    var bonuses = 0;
+    
+    for (let p of this.passengers) {
+      for (let n of p.needs) {
+        if (!this.hasAttr(n)) {
+          fines += p.fine;
+        }
+      }
+      
+      for (let d of p.desires) {
+        if (this.hasAttr(d)) {
+          bonuses += p.bonus;
+        }
+      }
+    }
+    
+    bank.earn(bonuses);
+    bank.spend(fines);
     
     score.save(this.passengers.length);
     
