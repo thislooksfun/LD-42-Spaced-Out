@@ -578,7 +578,6 @@ $(function () {
 },{"./game":3}],7:[function(require,module,exports){
 "use strict";
 
-const game = require("../game");
 const prettyPrint = require("../lib/util").prettyPrint;
 
 const startingMoney = 100000;
@@ -606,7 +605,7 @@ module.exports = {
     }
     money -= cost;
     if (money < 0) {
-      game.end("Out of money!");
+      require("../game").end("Out of money!");
     }
     redraw();
   },
@@ -651,14 +650,6 @@ module.exports = {
     this.redraw(pad2);
     this.redraw(pad3);
   },
-
-  // startBuild() {
-  //   if (this.ships.count < this.maxShips) {
-  //     this.ships.push(new Ship());
-  //   }
-  //   setTimeout(this.deliverShip.bind(this), buildTimeInSeconds * 1000);
-  //   console.log("Started building ship!");
-  // },
 
   redraw(pad) {
     pad.$pad.empty();
@@ -705,6 +696,15 @@ module.exports = {
       });
       pad.$pad.append(buyBtn);
     }
+
+    this.ensureCanBuild();
+  },
+
+  ensureCanBuild() {
+    if (pad1.ship == null && pad2.ship == null && pad3.ship == null && !bank.canSpend(priceToBuildShip)) {
+      // We have no ships, and not enough money to build another one
+      require("../game").end("Out of ships!");
+    }
   },
 
   deliverShip() {
@@ -713,7 +713,7 @@ module.exports = {
   }
 };
 
-},{"../class/ship":2,"../lib/util":5,"./bank":7}],9:[function(require,module,exports){
+},{"../class/ship":2,"../game":3,"../lib/util":5,"./bank":7}],9:[function(require,module,exports){
 "use strict";
 
 const Person = require("../class/person");
