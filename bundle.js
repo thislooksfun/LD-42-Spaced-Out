@@ -232,7 +232,6 @@ module.exports = class Person {
       passenger.$el.data("removeOnDragEnd", true);
       passenger.$el.trigger("dragend");
 
-      // TODO: Only redraw "content", not everything.
       _this.redrawContent();
     });
   }
@@ -316,7 +315,6 @@ module.exports = class Person {
   }
 
   redrawContent() {
-    // TODO: Redraw just the 'content' div
     this.$content.empty();
 
     for (let p of this.passengers) {
@@ -441,7 +439,6 @@ module.exports = {
     $overlayContainer.append($startBtn);
 
     $("body").append($overlay);
-    // TODO: Display end-of-game screen
   }
 };
 
@@ -573,7 +570,6 @@ $(function () {
     return Date.now() - start;
   };
 
-  // TODO: make a "start" button?
   require("./game").begin();
 });
 
@@ -751,7 +747,6 @@ module.exports = {
     people[newPerson.id] = newPerson;
   },
 
-  // TODO: Call this when a person is dropped on a ship
   get(id) {
     return people[id];
   },
@@ -845,7 +840,6 @@ module.exports = {
   decrement() {
     space--;
 
-    // TODO: Check for 'space' reaching 0, then end the game
     if (space <= 0) {
       require("../game").end("Out of space!");
     }
