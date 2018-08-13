@@ -31,14 +31,6 @@ module.exports = {
     this.redraw(pad3);
   },
   
-  // startBuild() {
-  //   if (this.ships.count < this.maxShips) {
-  //     this.ships.push(new Ship());
-  //   }
-  //   setTimeout(this.deliverShip.bind(this), buildTimeInSeconds * 1000);
-  //   console.log("Started building ship!");
-  // },
-  
   redraw(pad) {
     pad.$pad.empty();
     if (pad.ship != null) {
@@ -83,6 +75,15 @@ module.exports = {
         _this.redraw(pad);
       });
       pad.$pad.append(buyBtn);
+    }
+    
+    this.ensureCanBuild();
+  },
+  
+  ensureCanBuild() {
+    if (pad1.ship == null && pad2.ship == null && pad3.ship == null && !bank.canSpend(priceToBuildShip)) {
+      // We have no ships, and not enough money to build another one
+      require("../game").end("Out of ships!");
     }
   },
 
