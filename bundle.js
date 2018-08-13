@@ -406,6 +406,7 @@ module.exports = {
   begin() {
     $overlayContainer.empty();
     $overlayContainer.append($("<h1>", { text: "Spaced Out" }));
+    $overlayContainer.append($("<span>", { text: "v" + game_version }));
     let $startBtn = $("<button>", { text: "Start Game" });
     $startBtn.click(function () {
       $overlay.detach();
