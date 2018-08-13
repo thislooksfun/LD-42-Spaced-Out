@@ -35,7 +35,7 @@ module.exports = {
   begin() {
     $overlayContainer.empty();
     $overlayContainer.append($("<h1>", {text: "Spaced Out"}));
-    $overlayContainer.append($("<span>", {text: "v" + game_version}));
+    $overlayContainer.append($("<span>", {text: "v" + (window.game_version || ".dev")}));
     let $startBtn = $("<button>", {text: "Start Game"});
     $startBtn.click(function() {
       $overlay.detach();
