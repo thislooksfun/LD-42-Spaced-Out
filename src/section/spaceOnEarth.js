@@ -11,7 +11,7 @@ module.exports = {
   },
   
   start() {
-    this.refresh();
+    this.redraw();
     
     this._timer = setInterval(this.decrement.bind(this), secondsBetweenDecrement * 1000);
   },
@@ -28,10 +28,15 @@ module.exports = {
       require("../game").end("Out of space!");
     }
     
-    this.refresh();
+    this.redraw();
   },
   
-  refresh() {
+  add(count) {
+    space += count;
+    this.redraw();
+  },
+  
+  redraw() {
     $("#room-left").text(space);
   }
 };

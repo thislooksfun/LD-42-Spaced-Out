@@ -70,52 +70,82 @@ module.exports = class Person {
   toHTML() {
     this.$el.empty();
     
+    
+    /** Needs **/
+    
     let $needs = $("<div>", {
       class: "needs",
     });
-    if (this.needs.length === 0) {
-      $needs.append($("<span>", { text: "-- no needs --" }));
-    } else {
-      for (let req of this.needs) {
-        $needs.append($("<span>", { text: req }));
-      }
+    $needs.append($("<span>", { text: "Needs" }));
+    let $needsList = $("<div>", { class: "icon-list" });
+    for (let req of this.needs) {
+      $needsList.append(attributes.buildElFrom(req));
     }
+    $needs.append($needsList);
+    
+    let $fine = $("<div>", { class: "fine" });
+    $fine.append($("<span>", { text: "Fine:"}));
+    let $fineTxt = $("<span>", { class: "price cost", text: "-$" + (util.prettyPrint(this.fine)) + "/item" });
+    if (this.needs.length === 0) {
+      $fine.addClass("na");
+      $fineTxt.text("N/A");
+    }
+    $fine.append($fineTxt);
+    $needs.append($fine);
+    
     this.$el.append($needs);
+    
+    
+    
+    /** Desires **/
     
     let $desires = $("<div>", {
       class: "desires",
     });
-    if (this.desires.length === 0) {
-      $desires.append($("<span>", { text: "-- no desires --" }));
-    } else {
-      for (let req of this.desires) {
-        $desires.append($("<span>", { text: req }));
-      }
+    $desires.append($("<span>", { text: "Desires" }));
+    let $desiresList = $("<div>", { class: "icon-list" });
+    for (let des of this.desires) {
+      $desiresList.append(attributes.buildElFrom(des));
     }
+    $desires.append($desiresList);
+    
+    let $bonus = $("<div>", { class: "bonus" });
+    $bonus.append($("<span>", { text: "Bonus:"}));
+    let $bonusTxt = $("<span>", { class: "price earn", text: "+$" + (util.prettyPrint(this.bonus)) + "/item" });
+    if (this.desires.length === 0) {
+      $bonus.addClass("na");
+      $bonusTxt.text("N/A");
+    }
+    $bonus.append($bonusTxt);
+    $desires.append($bonus);
+    
     this.$el.append($desires);
     
     
     
-    let $money = $("<div>", {
-      class: "money",
-    });
-    if (!this.inShip) {
-      $money.append($("<span>", { class: "payout", text: "Payout: $" + util.prettyPrint(this.payout) }));
-    }
-    let $fine = $("<span>", { class: "fine", text: "Fine: $" + (util.prettyPrint(this.fine)) });
-    if (this.needs.length === 0) {
-      $fine.addClass("na");
-      $fine.text("Fine: N/A");
-    }
-    let $bonus = $("<span>", { class: "bonus", text: "Bonus: $" + util.prettyPrint(this.bonus) });
-    if (this.desires.length === 0) {
-      $bonus.addClass("na");
-      $bonus.text("Bonus: N/A");
-    }
-    $money.append($fine, $bonus);
-    this.$el.append($money);
+    /** Face + ticket price **/
     
-    console.log(this.id + " -- payout: $" + this.payout + "; fine: $" + this.fine + "; bonus: $" + this.bonus);
+    let $bottom = $("<div>", {
+      class: "face-and-ticket",
+    });
+    
+    let $face = $("<img>", {
+      src: "assets/img/person.png",
+      alt: "face",
+      class: "icon face",
+    });
+    $bottom.append($face);
+    
+    let $ticket = $("<div>", {
+      class: "ticket"
+    });
+    let $ticketInner = $("<span>", { text: "Ticket: " });
+    $ticketInner.append($("<span>", { class: "price earn", text: "+$" + (util.prettyPrint(this.payout)) }));
+    $ticket.append($ticketInner);
+    $bottom.append($ticket);
+    
+    this.$el.append($bottom);
+    
     
     return this.$el;
   }

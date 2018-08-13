@@ -2,15 +2,11 @@
 
 const Person = require("../class/person");
 
-const newPersonInterval = 2.5;
-const startingPeople = 5;
-const maxPeople = 10;
+const numberOfPeople = 5;
 
-var count = 0;
 var people = {};
 
 let $lobby = $("#lobby .content");
-let $header = $("#lobby h1");
 
 module.exports = {
   setup() {
@@ -18,9 +14,7 @@ module.exports = {
   },
   
   start() {
-    this._timer = setInterval(this.addNew.bind(this), newPersonInterval * 1000);
-    
-    for (var i = 0; i < startingPeople; i++) {
+    for (var i = 0; i < numberOfPeople; i++) {
       this.addNew();
     }
   },
@@ -30,14 +24,10 @@ module.exports = {
   },
   
   addNew() {
-    if (count < maxPeople) {
-      let newPerson = new Person();
-      $lobby.append(newPerson.toHTML());
-      newPerson.setupDragging();
-      people[newPerson.id] = newPerson;
-      count++;
-    }
-    $header.text("Lobby (" + count + "/" + maxPeople + ")");
+    let newPerson = new Person();
+    $lobby.append(newPerson.toHTML());
+    newPerson.setupDragging();
+    people[newPerson.id] = newPerson;
   },
   
   // TODO: Call this when a person is dropped on a ship
@@ -48,10 +38,11 @@ module.exports = {
   remove(id) {
     let person = people[id];
     delete people[id];
-    count--;
-    
     person.$el.detach();
-    $header.text("Lobby (" + count + "/" + maxPeople + ")");
+    
+    // Add a new person to replace the one we just removed
+    this.addNew();
+    
     return person;
   },
   

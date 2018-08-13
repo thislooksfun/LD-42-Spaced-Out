@@ -10,9 +10,9 @@ const priceToBuildShip = 5000;
 const priceToBuyPad = 10000;
 
 
-let pad1 = { ship: null, bought: true,  $el: $("#pad1"), $content: $("#pad1 .content") };
-let pad2 = { ship: null, bought: false, $el: $("#pad2"), $content: $("#pad2 .content") };
-let pad3 = { ship: null, bought: false, $el: $("#pad3"), $content: $("#pad3 .content") };
+let pad1 = { ship: null, bought: true,  $el: $("#pad1"), $pad: $("#pad1 .pad") };
+let pad2 = { ship: null, bought: false, $el: $("#pad2"), $pad: $("#pad2 .pad") };
+let pad3 = { ship: null, bought: false, $el: $("#pad3"), $pad: $("#pad3 .pad") };
 
 
 module.exports = {
@@ -38,16 +38,16 @@ module.exports = {
   // },
   
   redraw(pad) {
-    pad.$content.empty();
+    pad.$pad.empty();
     if (pad.ship != null) {
       pad.$el.removeClass("locked empty");
-      pad.$content.append(pad.ship.toHTML());
+      pad.$pad.append(pad.ship.toHTML());
       pad.ship.setupDragTarget();
     } else if (pad.bought) {
       pad.$el.removeClass("locked");
       pad.$el.addClass("empty");
       
-      pad.$content.append($("<h2>", {text: "Empty"}));
+      pad.$pad.append($("<h2>", {text: "Empty"}));
       let buildBtn = $("<button>", {class: "build", text: "Build ($" + prettyPrint(priceToBuildShip) + ")"});
       let _this = this;
       buildBtn.click(function() {
@@ -61,12 +61,12 @@ module.exports = {
         pad.ship = new Ship(pad, _this.redraw.bind(_this, pad));
         _this.redraw(pad);
       });
-      pad.$content.append(buildBtn);
+      pad.$pad.append(buildBtn);
     } else {
       pad.$el.removeClass("empty");
       pad.$el.addClass("locked");
       
-      pad.$content.append($("<h2>", {text: "Locked"}));
+      pad.$pad.append($("<h2>", {text: "Locked"}));
       let buyBtn = $("<button>", {class: "unlock", text: "Unlock ($" + prettyPrint(priceToBuyPad) + ")"});
       let _this = this;
       buyBtn.click(function() {
@@ -80,7 +80,7 @@ module.exports = {
         pad.bought = true;
         _this.redraw(pad);
       });
-      pad.$content.append(buyBtn);
+      pad.$pad.append(buyBtn);
     }
   },
 
