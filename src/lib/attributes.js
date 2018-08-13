@@ -2,7 +2,7 @@
 
 const utils = require("./util");
 
-const assetBasePath = "assets/??/";
+const assetBasePath = "assets/attributes/icons/";
 const ext = ".png";
 
 module.exports = {
@@ -44,6 +44,7 @@ module.exports = {
   buildElFrom(name) {
     $("<img>", {
       src: assetBasePath + name + ext,
+      alt: name,
       class: "icon attribute",
     });
   },
