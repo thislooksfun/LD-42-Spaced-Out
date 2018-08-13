@@ -66,50 +66,76 @@ module.exports = class Person {
   toHTML() {
     this.$el.empty();
 
+    /** Needs **/
+
     let $needs = $("<div>", {
       class: "needs"
     });
-    if (this.needs.length === 0) {
-      $needs.append($("<span>", { text: "-- no needs --" }));
-    } else {
-      for (let req of this.needs) {
-        $needs.append($("<span>", { text: req }));
-      }
+    $needs.append($("<span>", { text: "Needs" }));
+    let $needsList = $("<div>", { class: "icon-list" });
+    for (let req of this.needs) {
+      $needsList.append(attributes.buildElFrom(req));
     }
+    $needs.append($needsList);
+
+    let $fine = $("<div>", { class: "fine" });
+    $fine.append($("<span>", { text: "Fine:" }));
+    let $fineTxt = $("<span>", { class: "price cost", text: "-$" + util.prettyPrint(this.fine) + "/item" });
+    if (this.needs.length === 0) {
+      $fine.addClass("na");
+      $fineTxt.text("N/A");
+    }
+    $fine.append($fineTxt);
+    $needs.append($fine);
+
     this.$el.append($needs);
+
+    /** Desires **/
 
     let $desires = $("<div>", {
       class: "desires"
     });
-    if (this.desires.length === 0) {
-      $desires.append($("<span>", { text: "-- no desires --" }));
-    } else {
-      for (let req of this.desires) {
-        $desires.append($("<span>", { text: req }));
-      }
+    $desires.append($("<span>", { text: "Desires" }));
+    let $desiresList = $("<div>", { class: "icon-list" });
+    for (let des of this.desires) {
+      $desiresList.append(attributes.buildElFrom(des));
     }
-    this.$el.append($desires);
+    $desires.append($desiresList);
 
-    let $money = $("<div>", {
-      class: "money"
-    });
-    if (!this.inShip) {
-      $money.append($("<span>", { class: "payout", text: "Payout: $" + util.prettyPrint(this.payout) }));
-    }
-    let $fine = $("<span>", { class: "fine", text: "Fine: $" + util.prettyPrint(this.fine) });
-    if (this.needs.length === 0) {
-      $fine.addClass("na");
-      $fine.text("Fine: N/A");
-    }
-    let $bonus = $("<span>", { class: "bonus", text: "Bonus: $" + util.prettyPrint(this.bonus) });
+    let $bonus = $("<div>", { class: "bonus" });
+    $bonus.append($("<span>", { text: "Bonus:" }));
+    let $bonusTxt = $("<span>", { class: "price earn", text: "+$" + util.prettyPrint(this.bonus) + "/item" });
     if (this.desires.length === 0) {
       $bonus.addClass("na");
-      $bonus.text("Bonus: N/A");
+      $bonusTxt.text("N/A");
     }
-    $money.append($fine, $bonus);
-    this.$el.append($money);
+    $bonus.append($bonusTxt);
+    $desires.append($bonus);
 
-    console.log(this.id + " -- payout: $" + this.payout + "; fine: $" + this.fine + "; bonus: $" + this.bonus);
+    this.$el.append($desires);
+
+    /** Face + ticket price **/
+
+    let $bottom = $("<div>", {
+      class: "face-and-ticket"
+    });
+
+    let $face = $("<img>", {
+      src: "assets/img/person.png",
+      alt: "face",
+      class: "icon face"
+    });
+    $bottom.append($face);
+
+    let $ticket = $("<div>", {
+      class: "ticket"
+    });
+    let $ticketInner = $("<span>", { text: "Ticket: " });
+    $ticketInner.append($("<span>", { class: "price earn", text: "+$" + util.prettyPrint(this.payout) }));
+    $ticket.append($ticketInner);
+    $bottom.append($ticket);
+
+    this.$el.append($bottom);
 
     return this.$el;
   }
@@ -119,9 +145,11 @@ module.exports = class Person {
 "use strict";
 
 const attributes = require("../lib/attributes");
-const lobby = require("../section/lobby");
 const bank = require("../section/bank");
+const lobby = require("../section/lobby");
+const score = require("../section/score");
 
+const maxAttributes = 5;
 const maxPassengers = 5;
 
 function dragOver(ev) {
@@ -143,12 +171,12 @@ function dragLeave() {
 
 module.exports = class Person {
 
-  constructor(pad, redraw) {
+  constructor(pad, redrawPad) {
     this.attributes = attributes.random(1);
     this.passengers = [];
 
     this._pad = pad;
-    this._redraw = redraw;
+    this._redrawPad = redrawPad;
 
     this.$el = $("<div>", {
       class: "ship"
@@ -162,6 +190,14 @@ module.exports = class Person {
     this.passengers.push(person);
     person.inShip = true;
     bank.earn(person.payout);
+
+    if (this.passengers.length >= maxPassengers) {
+      console.log("Full!");
+      this.clearDragTarget();
+    }
+
+    this.redrawCapacity();
+    this.$launchBtn.removeAttr("disabled");
 
     return true;
   }
@@ -196,45 +232,147 @@ module.exports = class Person {
       passenger.$el.data("removeOnDragEnd", true);
       passenger.$el.trigger("dragend");
 
-      _this._redraw();
+      // TODO: Only redraw "content", not everything.
+      _this.redrawContent();
     });
+  }
+
+  clearDragTarget() {
+    console.log("Clearing drag targets...", this.$el);
+    this.$el.off("dragover");
+    this.$el.off("dragenter");
+    this.$el.off("dragleave");
+    this.$el.off("drop");
   }
 
   toHTML() {
     this.$el.empty();
 
-    for (let p of this.passengers) {
-      this.$el.append(p.toHTML());
-    }
-    for (var i = 0; i < maxPassengers - this.passengers.length; i++) {
-      this.$el.append($("<div>", { class: "slot empty" }));
-    }
+    this.$attributes = $("<div>", { class: "attributes" });
+    this.redrawAttributes();
+    this.$el.append(this.$attributes);
 
-    let $launchBtn = $("<button>", { class: "launch", text: "Launch!" });
-    $launchBtn.click(this.launch.bind(this));
+    this.$content = $("<div>", { class: "content" });
+    this.redrawContent();
+    this.$el.append(this.$content);
+
+    this.$el.append($("<div>", { class: "fade down" }));
+    this.$el.append($("<div>", { class: "fade up" }));
+
+    this.$launchBtn = $("<button>", { class: "launch", text: "Launch!" });
+    this.$launchBtn.click(this.launch.bind(this));
 
     if (this.passengers.length == 0) {
-      $launchBtn.prop("disabled", true);
+      this.$launchBtn.prop("disabled", true);
     }
 
-    this.$el.append($launchBtn);
+    this.$el.append(this.$launchBtn);
+
+    this.$capacity = $("<span>", { class: "capacity", text: "??/??" });
+    this.$el.append(this.$capacity);
+    this.redrawCapacity();
 
     return this.$el;
   }
 
+  redrawAttributes(paletteOpen = false) {
+    this.$attributes.empty();
+
+    this.$attributes.append($("<span>", { class: "desc", text: "Target planet attributes: " }));
+
+    let $list = $("<div>", { class: "attr-list" });
+    for (let a of this.attributes) {
+      let $container = $("<div>", { class: "attr-container" });
+      $container.append(attributes.buildElFrom(a));
+      $list.append($container);
+    }
+    for (var i = 0; i < maxAttributes - this.attributes.length; i++) {
+      $list.append($("<div>", { class: "attr-container" }));
+    }
+    this.$attributes.append($list);
+
+    let $addBtn = $("<button>", { class: "add", text: "Add" });
+    $addBtn.click(this.displayPalette.bind(this));
+
+    if (paletteOpen) {
+      this.displayPalette();
+    }
+
+    this.$attributes.append($addBtn);
+  }
+
+  displayPalette() {
+    let _this = this;
+    let $pal = attributes.buildPalette(this.attributes, function (name) {
+      console.log("Clicked on attribute", name);
+      _this.attributes.push(name);
+      _this.redrawAttributes(true);
+    });
+    this.$attributes.append($pal);
+  }
+
+  redrawCapacity() {
+    this.$capacity.text(this.passengers.length + "/" + maxPassengers);
+  }
+
+  redrawContent() {
+    // TODO: Redraw just the 'content' div
+    this.$content.empty();
+
+    for (let p of this.passengers) {
+      this.$content.append(p.toHTML());
+    }
+    for (var i = 0; i < maxPassengers - this.passengers.length; i++) {
+      this.$content.append($("<div>", { class: "slot empty" }));
+    }
+  }
+
+  hasAttr(a) {
+    for (let at of this.attributes) {
+      if (at === a) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   launch() {
-    console.log("Launching ship!", this.passengers);
+    console.log("Launching ship!", this);
 
-    // TODO: Handle fines and bonuses
+    var bonuses = 0;
+    var fines = 0;
 
+    for (let p of this.passengers) {
+      for (let d of p.desires) {
+        if (this.hasAttr(d)) {
+          bonuses += p.bonus;
+        }
+      }
+
+      for (let n of p.needs) {
+        if (!this.hasAttr(n)) {
+          fines += p.fine;
+        }
+      }
+    }
+
+    // Process bonuses first just in case the fines would put the balance below zero.
+    // For example: say the balance is $300, and we need to process $400 in fines and $700 in bonuses.
+    // If we process the fines first, the balance would go to -$100, and the game would end before the +$700
+    // in bonuses is added.
+    // This way around we only trigger the end-game condition if the final sum is invalid.
+    bank.earn(bonuses);
+    bank.spend(fines);
+
+    score.save(this.passengers.length);
 
     this._pad.ship = null;
-    this._redraw();
+    this._redrawPad();
   }
 
 };
 
-},{"../lib/attributes":4,"../section/bank":7,"../section/lobby":9}],3:[function(require,module,exports){
+},{"../lib/attributes":4,"../section/bank":7,"../section/lobby":9,"../section/score":10}],3:[function(require,module,exports){
 "use strict";
 
 var sections = [require("./section/bank"), require("./section/launchpads"), require("./section/lobby"), require("./section/score"), require("./section/spaceOnEarth")];
@@ -278,17 +416,22 @@ module.exports = {
 
 const utils = require("./util");
 
+const assetBasePath = "assets/attributes/icons/";
+const ext = ".png";
+
 module.exports = {
   random(count = 5, list = null) {
     var out = [];
     if (list == null) {
       // Make a copy of the array
-      list = this.list.slice(this.list);
+      list = this.groups.slice(this.groups);
     }
 
     while (count > 0 && list.length > 0) {
       let index = utils.rand(list.length - 1);
-      out.push(list[index]);
+      let entry = list[index];
+      let opt = entry.opts[utils.rand(entry.opts.length - 1)];
+      out.push(entry.name + "." + opt);
       list.splice(index, 1);
       count--;
     }
@@ -297,7 +440,66 @@ module.exports = {
     return out;
   },
 
-  list: ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+  buildPalette(currentAttrs, onSelect) {
+    // Make a copy of the array
+    var groups = this.groups.slice(this.groups);
+
+    // Filter out any attrs that are already in the target list
+    for (let a of currentAttrs) {
+      let parts = a.split(".");
+
+      var i = 0;
+      while (i < groups.length) {
+        if (groups[i].name === parts[0]) {
+          groups.splice(i, 1);
+          continue;
+        }
+        i++;
+      }
+    }
+
+    let $container = $("<div>", { class: "attr-select" });
+    let $groups = $("<div>", { class: "groups" });
+    for (let g of groups) {
+      let $group = $("<div>", { class: "group" });
+      for (let o of g.opts) {
+        let name = g.name + "." + o;
+        let $opt = this.buildElFrom(name);
+        $opt.addClass("clickable");
+        $opt.click(function () {
+          onSelect(name);
+        });
+        $group.append($opt);
+      }
+      $groups.append($group);
+    }
+    $container.append($groups);
+
+    let $closeBtn = $("<button>", { class: "close", text: "Close" });
+    $closeBtn.click(function () {
+      $container.remove();
+    });
+    $container.append($closeBtn);
+
+    return $container;
+  },
+
+  groups: [{ name: "cats", opts: ["none", "some"] },
+  // {name: "clouds",      opts: [ "none" , "low", "med", "high" ]}, // missing: none, med, high
+  { name: "desert", opts: ["none", "some"] }, { name: "grass", opts: ["none", "low", "med", "high"] }, { name: "moons", opts: ["none", "one", "two"] },
+  // {name: "rain",        opts: [ "none" , "some"               ]}, // missing: none, some
+  // {name: "rings",       opts: [ "none" , "some"               ]}, // missing: none
+  { name: "size", opts: ["small", "large"] }],
+
+  buildElFrom(name) {
+    return $("<img>", {
+      src: assetBasePath + name + ext,
+      alt: name,
+      title: name, // Todo: try to prettify this?
+      class: "icon attribute"
+    });
+  }
+
 };
 
 },{"./util":5}],5:[function(require,module,exports){
@@ -394,9 +596,9 @@ const bank = require("./bank");
 const priceToBuildShip = 5000;
 const priceToBuyPad = 10000;
 
-let pad1 = { ship: null, bought: true, $el: $("#pad1"), $content: $("#pad1 .content") };
-let pad2 = { ship: null, bought: false, $el: $("#pad2"), $content: $("#pad2 .content") };
-let pad3 = { ship: null, bought: false, $el: $("#pad3"), $content: $("#pad3 .content") };
+let pad1 = { ship: null, bought: true, $el: $("#pad1"), $pad: $("#pad1 .pad") };
+let pad2 = { ship: null, bought: false, $el: $("#pad2"), $pad: $("#pad2 .pad") };
+let pad3 = { ship: null, bought: false, $el: $("#pad3"), $pad: $("#pad3 .pad") };
 
 module.exports = {
 
@@ -421,16 +623,16 @@ module.exports = {
   // },
 
   redraw(pad) {
-    pad.$content.empty();
+    pad.$pad.empty();
     if (pad.ship != null) {
       pad.$el.removeClass("locked empty");
-      pad.$content.append(pad.ship.toHTML());
+      pad.$pad.append(pad.ship.toHTML());
       pad.ship.setupDragTarget();
     } else if (pad.bought) {
       pad.$el.removeClass("locked");
       pad.$el.addClass("empty");
 
-      pad.$content.append($("<h2>", { text: "Empty" }));
+      pad.$pad.append($("<h2>", { text: "Empty" }));
       let buildBtn = $("<button>", { class: "build", text: "Build ($" + prettyPrint(priceToBuildShip) + ")" });
       let _this = this;
       buildBtn.click(function () {
@@ -444,12 +646,12 @@ module.exports = {
         pad.ship = new Ship(pad, _this.redraw.bind(_this, pad));
         _this.redraw(pad);
       });
-      pad.$content.append(buildBtn);
+      pad.$pad.append(buildBtn);
     } else {
       pad.$el.removeClass("empty");
       pad.$el.addClass("locked");
 
-      pad.$content.append($("<h2>", { text: "Locked" }));
+      pad.$pad.append($("<h2>", { text: "Locked" }));
       let buyBtn = $("<button>", { class: "unlock", text: "Unlock ($" + prettyPrint(priceToBuyPad) + ")" });
       let _this = this;
       buyBtn.click(function () {
@@ -463,7 +665,7 @@ module.exports = {
         pad.bought = true;
         _this.redraw(pad);
       });
-      pad.$content.append(buyBtn);
+      pad.$pad.append(buyBtn);
     }
   },
 
@@ -478,15 +680,11 @@ module.exports = {
 
 const Person = require("../class/person");
 
-const newPersonInterval = 2.5;
-const startingPeople = 5;
-const maxPeople = 10;
+const numberOfPeople = 5;
 
-var count = 0;
 var people = {};
 
 let $lobby = $("#lobby .content");
-let $header = $("#lobby h1");
 
 module.exports = {
   setup() {
@@ -494,9 +692,7 @@ module.exports = {
   },
 
   start() {
-    this._timer = setInterval(this.addNew.bind(this), newPersonInterval * 1000);
-
-    for (var i = 0; i < startingPeople; i++) {
+    for (var i = 0; i < numberOfPeople; i++) {
       this.addNew();
     }
   },
@@ -506,14 +702,10 @@ module.exports = {
   },
 
   addNew() {
-    if (count < maxPeople) {
-      let newPerson = new Person();
-      $lobby.append(newPerson.toHTML());
-      newPerson.setupDragging();
-      people[newPerson.id] = newPerson;
-      count++;
-    }
-    $header.text("Lobby (" + count + "/" + maxPeople + ")");
+    let newPerson = new Person();
+    $lobby.append(newPerson.toHTML());
+    newPerson.setupDragging();
+    people[newPerson.id] = newPerson;
   },
 
   // TODO: Call this when a person is dropped on a ship
@@ -524,10 +716,11 @@ module.exports = {
   remove(id) {
     let person = people[id];
     delete people[id];
-    count--;
-
     person.$el.detach();
-    $header.text("Lobby (" + count + "/" + maxPeople + ")");
+
+    // Add a new person to replace the one we just removed
+    this.addNew();
+
     return person;
   },
 
@@ -544,6 +737,7 @@ module.exports = {
 "use strict";
 
 const prettyPrint = require("../lib/util").prettyPrint;
+const soe = require("./spaceOnEarth");
 
 // How many people you have to save to get the hardest difficulty
 const hardestDifficultyAt = 100;
@@ -564,6 +758,8 @@ module.exports = {
   save(count) {
     saved += count;
     redraw();
+
+    soe.add(count);
   },
 
   // Starts at '0' (easiest), and goes to '1' (hardest) over the course of the game
@@ -573,7 +769,7 @@ module.exports = {
 
 };
 
-},{"../lib/util":5}],11:[function(require,module,exports){
+},{"../lib/util":5,"./spaceOnEarth":11}],11:[function(require,module,exports){
 "use strict";
 
 const secondsBetweenDecrement = 2;
@@ -587,7 +783,7 @@ module.exports = {
   },
 
   start() {
-    this.refresh();
+    this.redraw();
 
     this._timer = setInterval(this.decrement.bind(this), secondsBetweenDecrement * 1000);
   },
@@ -604,10 +800,15 @@ module.exports = {
       require("../game").end("Out of space!");
     }
 
-    this.refresh();
+    this.redraw();
   },
 
-  refresh() {
+  add(count) {
+    space += count;
+    this.redraw();
+  },
+
+  redraw() {
     $("#room-left").text(space);
   }
 };
