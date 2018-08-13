@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="main.css">
     
     <!-- Javascript -->
-    <script src="jquery-3.3.1.min.js" charset="utf-8"></script>
+    <script src="assets/jquery-3.3.1.min.js" charset="utf-8"></script>
     <script src="bundle.js" charset="utf-8"></script>
     
   </head>
@@ -19,24 +19,35 @@
     
     <main id="play-area">
       
-      
-      <section id="space-counter">
+      <section id="population">
         <!-- TODO: Image and circle thing -->
         <span>Space left on earth: <span id="room-left">0</span></span>
       </section>
       
       
+      <header>
+        <div id="bank">
+          <span>Balance: <span id="balance">$???</span></span>
+        </div>
+        
+        <div id="escapees">
+          <span>You have helped <span id="saved">???</span> escape Earth.</span>
+        </div>
+      </header>
       
-      <section id="ships">
-        
-        <button id="build-ship" type="button" name="build_ship">Build Ship</button>
-        
-        <section id="launch-pads">
-          <section class="launch-pad">
-            <div class="ship"></div>
-          </section>
-        </section>
-        
+      
+      <section id="lobby">
+        <h1>Lobby</h1>
+        <div class="content"></div>
+        <div class="fade down"></div>
+        <div class="fade up"></div>
+      </section>
+      
+      
+      <section id="launchpads">
+        <section id="pad1" class="launchpad"><h1>Pad 1</h1><div class="content"></div></section>
+        <section id="pad2" class="launchpad"><h1>Pad 2</h1><div class="content"></div></section>
+        <section id="pad3" class="launchpad"><h1>Pad 3</h1><div class="content"></div></section>
       </section>
       
       

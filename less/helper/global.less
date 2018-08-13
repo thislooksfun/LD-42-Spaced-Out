@@ -1,0 +1,52 @@
+body {
+  text-align: center;
+}
+
+* {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  /* Required to make elements draggable in old WebKit */
+  -khtml-user-drag: element;
+  -webkit-user-drag: element;
+}
+
+[draggable] {
+  cursor: move;
+  
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+  /* Required to make elements draggable in old WebKit */
+  -khtml-user-drag: element;
+  -webkit-user-drag: element;
+}
+
+h1 {
+  font-size: 20pt;
+  padding: 0;
+  margin: 0;
+  
+  text-align: center;
+}
+
+button {
+  background-color: @color-button-default;
+  color: @color-button-text-default;
+
+  border: none;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+
+  &:disabled, &[disabled] {
+    background-color: @color-button-disabled;
+    color: @color-button-text-disabled;
+    cursor: default;
+  }
+}
