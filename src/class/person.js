@@ -84,10 +84,11 @@ module.exports = class Person {
     $needs.append($needsList);
     
     let $fine = $("<div>", { class: "fine" });
-    let $fineTxt = $("<span>", { text: "Fine: $" + (util.prettyPrint(this.fine)) + "/item" });
+    $fine.append($("<span>", { text: "Fine:"}));
+    let $fineTxt = $("<span>", { class: "price cost", text: "-$" + (util.prettyPrint(this.fine)) + "/item" });
     if (this.needs.length === 0) {
       $fine.addClass("na");
-      $fineTxt.text("Fine: N/A");
+      $fineTxt.text("N/A");
     }
     $fine.append($fineTxt);
     $needs.append($fine);
@@ -109,10 +110,11 @@ module.exports = class Person {
     $desires.append($desiresList);
     
     let $bonus = $("<div>", { class: "bonus" });
-    let $bonusTxt = $("<span>", { text: "Bonus: $" + (util.prettyPrint(this.bonus)) + "/item" });
-    if (this.needs.length === 0) {
+    $bonus.append($("<span>", { text: "Bonus:"}));
+    let $bonusTxt = $("<span>", { class: "price earn", text: "+$" + (util.prettyPrint(this.bonus)) + "/item" });
+    if (this.desires.length === 0) {
       $bonus.addClass("na");
-      $bonusTxt.text("Bonus: N/A");
+      $bonusTxt.text("N/A");
     }
     $bonus.append($bonusTxt);
     $desires.append($bonus);
@@ -124,7 +126,7 @@ module.exports = class Person {
     /** Face + ticket price **/
     
     let $bottom = $("<div>", {
-      class: "face-and-price",
+      class: "face-and-ticket",
     });
     
     let $face = $("<img>", {
@@ -133,6 +135,14 @@ module.exports = class Person {
       class: "icon face",
     });
     $bottom.append($face);
+    
+    let $ticket = $("<div>", {
+      class: "ticket"
+    });
+    let $ticketInner = $("<span>", { text: "Ticket: " });
+    $ticketInner.append($("<span>", { class: "price earn", text: "+$" + (util.prettyPrint(this.payout)) }));
+    $ticket.append($ticketInner);
+    $bottom.append($ticket);
     
     this.$el.append($bottom);
     
