@@ -5,6 +5,7 @@ const bank = require("../section/bank");
 const lobby = require("../section/lobby");
 const score = require("../section/score");
 
+const maxAttributes = 5;
 const maxPassengers = 5;
 
 
@@ -99,6 +100,12 @@ module.exports = class Person {
   toHTML() {
     this.$el.empty();
     
+    
+    this.$attributes = $("<div>", {class: "attributes"});
+    this.redrawAttributes();
+    this.$el.append(this.$attributes);
+    
+    
     this.$content = $("<div>", {class: "content"});
     this.redrawContent();
     this.$el.append(this.$content);
@@ -122,6 +129,42 @@ module.exports = class Person {
     return this.$el;
   }
   
+  redrawAttributes(paletteOpen = false) {
+    this.$attributes.empty();
+    
+    this.$attributes.append($("<span>", {class: "desc", text: "Target planet attributes: "}));
+    
+    let $list = $("<div>", {class: "attr-list"});
+    for (let a of this.attributes) {
+      let $container = $("<div>", {class: "attr-container"});
+      $container.append(attributes.buildElFrom(a));
+      $list.append($container);
+    }
+    for (var i = 0; i < maxAttributes - this.attributes.length; i++) {
+      $list.append($("<div>", {class: "attr-container"}));
+    }
+    this.$attributes.append($list);
+    
+    let $addBtn = $("<button>", {class: "add", text: "Add"});
+    $addBtn.click(this.displayPalette.bind(this));
+    
+    if (paletteOpen) {
+      this.displayPalette();
+    }
+    
+    this.$attributes.append($addBtn);
+  }
+  
+  displayPalette() {
+    let _this = this;
+    let $pal = attributes.buildPalette(this.attributes, function(name) {
+      console.log("Clicked on attribute", name);
+      _this.attributes.push(name);
+      _this.redrawAttributes(true);
+    });
+    this.$attributes.append($pal);
+  }
+  
   redrawCapacity() {
     this.$capacity.text(this.passengers.length + "/" + maxPassengers);
   }
@@ -139,7 +182,7 @@ module.exports = class Person {
   }
   
   launch() {
-    console.log("Launching ship!", this.passengers);
+    console.log("Launching ship!", this);
     
     // TODO: Handle fines and bonuses
     
