@@ -68,6 +68,7 @@ module.exports = {
   },
   
   spend(cost) {
+    if (cost == 0) { return; }
     if (cost < 0) {
       return this.earn(-cost);
     }
@@ -85,6 +86,7 @@ module.exports = {
   },
   
   earn(amount) {
+    if (amount == 0) { return; }
     if (amount < 0) {
       return this.spend(-amount);
     }
