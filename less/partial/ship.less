@@ -1,9 +1,164 @@
 .ship {
   
-  padding: 5px;
+  @button-height: 50px;
+  @button-margin: 10px;
+  
+  position: relative;
+  
+  height: 100%;
+  
+  // This is to make up for the 'lobby' column having an extra 2px of border
+  margin-left: 2px;
+  
+  display: grid;
+  
+  grid-template-columns: auto;
+  grid-template-rows: 98px auto (@button-height + @button-margin * 2);
+  
+  
+  .attributes {
+    grid-column: 1;
+    grid-row: 1;
+    
+    position: relative;
+    
+    border: 1px solid gray;
+    
+    margin: 0 5px;
+    padding: 5px 20px;
+    
+    width: calc(100% - 54px);
+    
+    display: grid;
+    
+    grid-template-columns: auto;
+    grid-template-rows: 20px 28px 30px;
+    
+    grid-gap: 5px;
+    
+    .desc {
+      grid-column: 1;
+      grid-row: 1;
+    }
+    
+    .attr-list {
+      grid-column: 1;
+      grid-row: 2;
+      
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      
+      .attr-container {
+        width: 100%;
+        
+        // display: inline-block;
+        width: 24px;
+        height: $width;
+        border-top: 2px solid black;
+        border-bottom: 2px solid black;
+        border-left: 1px solid black;
+        border-right: 1px solid black;
+        
+        img {
+          width: 24px;
+          height: $width;
+        }
+        
+        &:first-child {
+          border-left: 2px solid black;
+        }
+        
+        &:last-child {
+          border-right: 2px solid black;
+        }
+      }
+    }
+    
+    .add {
+      grid-column: 1;
+      grid-row: 3;
+      
+      height: 28px;
+      padding: 5px 5px;
+      margin: 0 5px;
+    }
+    
+    .attr-select {
+      position: absolute;
+      
+      top: 60px;
+      width: calc(90% - 10px);
+      left: 5%;
+      
+      padding: 5px;
+      
+      background-color: #853bc6;
+      
+      z-index: 9999;
+      
+      display: grid;
+      grid-template-columns: auto;
+      grid-template-rows: auto auto;
+      
+      .groups {
+        grid-column: 1;
+        grid-row: 1;
+        
+        .group {
+          
+          border: 1px solid gray;
+          
+          margin: 2px;
+          padding: 2px;
+          
+          display: inline-block;
+          
+          height: 24px;
+          
+          img {
+            height: 24px;
+            
+            border-left: 1px solid gray;
+            
+            &:first-child {
+              border: 0;
+            }
+            
+            &:hover {
+              background-color: @color-bg-hover;
+            }
+          }
+        }
+      }
+      
+      .close {
+        grid-column: 1;
+        grid-row: 2;
+        
+        padding: 5px 10px;
+      }
+    }
+  }
+  
+  
+  .fade, .content {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .fade.up {
+    bottom: @button-height + @button-margin * 2;
+  }
+  
+  button {
+    grid-column: 1;
+    grid-row: 3;
+    
+    margin: @button-margin;
+  }
   
   .person, .slot {
-    height: 80px;
+    height: 150px;
     
     pointer-events: none;
   }
@@ -16,5 +171,25 @@
   
   &.dragged-over {
     background: @color-drag-over;
+    
+    .fade.down {
+      background: linear-gradient(@color-drag-over, fade(@color-drag-over, 0));
+    }
+    .fade.up {
+      background: linear-gradient(fade(@color-drag-over, 0), @color-drag-over);
+    }
+  }
+  
+  .capacity {
+    grid-column: 1;
+    grid-row: 2;
+    
+    position: absolute;
+    top: 5px;
+    
+    display: block;
+    width: 100%;
+    
+    font-size: 14pt;
   }
 }
