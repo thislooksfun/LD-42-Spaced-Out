@@ -27,10 +27,24 @@ function start() {
 }
 
 
+var $overlay = $("<div>", {class: "overlay"});
+var $overlayContainer = $("<div>", {class: "container"});
+$overlay.append($overlayContainer);
+
+
 module.exports = {
   begin() {
-    setup();
-    start();
+    $overlayContainer.empty();
+    $overlayContainer.append($("<h1>", {text: "Spaced Out"}));
+    let $startBtn = $("<button>", {text: "Start Game"});
+    $startBtn.click(function() {
+      $overlay.detach();
+      setup();
+      start();
+    });
+    $overlayContainer.append($startBtn);
+    
+    $("body").append($overlay);
   },
   
   end(reason) {
@@ -41,6 +55,20 @@ module.exports = {
       }
     }
     
+    $overlayContainer.empty();
+    $overlayContainer.append($("<h1>", {text: "Game Over"}));
+    let score = require("./section/score").format();
+    $overlayContainer.append($("<span>", {text: "The Earth has run out of space."}));
+    $overlayContainer.append($("<span>", {text: "But hey, at least you saved " + score + "."}));
+    let $startBtn = $("<button>", {text: "Retry?"});
+    $startBtn.click(function() {
+      $overlay.detach();
+      setup();
+      start();
+    });
+    $overlayContainer.append($startBtn);
+    
+    $("body").append($overlay);
     // TODO: Display end-of-game screen
   }
 };

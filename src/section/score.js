@@ -9,7 +9,11 @@ const hardestDifficultyAt = 100;
 var saved = -1;
 let $saved = $("#saved");
 function redraw() {
-  $saved.text(prettyPrint(saved) + " " + (saved === 1 ? "person" : "people"));
+  $saved.text(format());
+}
+
+function format() {
+  return prettyPrint(saved) + " " + (saved === 1 ? "person" : "people");
 }
 
 module.exports = {
@@ -18,6 +22,8 @@ module.exports = {
     saved = 0;
     redraw();
   },
+  
+  format: format,
   
   save(count) {
     saved += count;
