@@ -100,7 +100,9 @@ module.exports = class Person {
     let $money = $("<div>", {
       class: "money",
     });
-    $money.append($("<span>", { class: "payout", text: "Payout: $" + util.prettyPrint(this.payout) }));
+    if (!this.inShip) {
+      $money.append($("<span>", { class: "payout", text: "Payout: $" + util.prettyPrint(this.payout) }));
+    }
     let $fine = $("<span>", { class: "fine", text: "Fine: $" + (util.prettyPrint(this.fine)) });
     if (this.needs.length === 0) {
       $fine.addClass("na");

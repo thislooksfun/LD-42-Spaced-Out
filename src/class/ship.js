@@ -43,6 +43,7 @@ module.exports = class Person {
     if (this.passengers.length >= maxPassengers) { return false; }
     this.passengers.push(person);
     person.inShip = true;
+    bank.earn(person.payout);
     
     return true;
   }
@@ -100,16 +101,11 @@ module.exports = class Person {
   }
   
   launch() {
-    // TODO:
     console.log("Launching ship!", this.passengers);
     
-    let sum = 0;
-    for (let p of this.passengers) {
-      sum += p.payout;
-    }
-    bank.earn(sum);
     
     // TODO: Handle fines and bonuses
+    
     
     this._pad.ship = null;
     this._redraw();
