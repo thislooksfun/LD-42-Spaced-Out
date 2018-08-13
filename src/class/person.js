@@ -74,10 +74,11 @@ module.exports = class Person {
       class: "needs",
     });
     if (this.needs.length === 0) {
+      // TODO: Tweak this?
       $needs.append($("<span>", { text: "-- no needs --" }));
     } else {
       for (let req of this.needs) {
-        $needs.append($("<span>", { text: req }));
+        $needs.append(attributes.buildElFrom(req));
       }
     }
     this.$el.append($needs);
@@ -86,10 +87,11 @@ module.exports = class Person {
       class: "desires",
     });
     if (this.desires.length === 0) {
+      // TODO: Tweak this?
       $desires.append($("<span>", { text: "-- no desires --" }));
     } else {
-      for (let req of this.desires) {
-        $desires.append($("<span>", { text: req }));
+      for (let des of this.desires) {
+        $desires.append(attributes.buildElFrom(des));
       }
     }
     this.$el.append($desires);
