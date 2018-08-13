@@ -7,10 +7,10 @@ const diffScale = require("../section/score").diffScale;
 
 const maxAttributes = 5;
 
-const moneyScale = 10;
-const payoutMin  = 500;
-const fineMin    = 50;
-const bonusMin   = 25;
+const moneyScale = 5;
+const payoutMin  = 1000;
+const fineMin    = 250;
+const bonusMin   = 250;
 
 
 function dragStart(e, id) {

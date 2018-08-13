@@ -7,18 +7,20 @@ const bank = require("./bank");
 // const buildTimeInSeconds = 5;
 
 const priceToBuildShip = 5000;
-const priceToBuyPad = 10000;
+const priceToBuyPad = 75000;
 
 
-let pad1 = { ship: null, bought: true,  $el: $("#pad1"), $pad: $("#pad1 .pad") };
-let pad2 = { ship: null, bought: false, $el: $("#pad2"), $pad: $("#pad2 .pad") };
-let pad3 = { ship: null, bought: false, $el: $("#pad3"), $pad: $("#pad3 .pad") };
+let pad1;
+let pad2;
+let pad3;
 
 
 module.exports = {
   
   setup() {
-    // TODO: ?
+    pad1 = { ship: null, bought: true,  $el: $("#pad1"), $pad: $("#pad1 .pad") };
+    pad2 = { ship: null, bought: false, $el: $("#pad2"), $pad: $("#pad2 .pad") };
+    pad3 = { ship: null, bought: false, $el: $("#pad3"), $pad: $("#pad3 .pad") };
   },
   
   start() {

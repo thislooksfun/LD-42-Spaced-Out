@@ -6,12 +6,11 @@ const assetBasePath = "assets/attributes/icons/";
 const ext = ".png";
 
 module.exports = {
-  random(count = 5, list = null) {
+  random(count = 5, fromList = null) {
     var out = [];
-    if (list == null) {
-      // Make a copy of the array
-      list = this.groups.slice(this.groups);
-    }
+    let tmp = fromList || this.groups;
+    // Make a copy of the array
+    var list = tmp.slice();
     
     while (count > 0 && list.length > 0) {
       let index = utils.rand(list.length - 1);
@@ -26,12 +25,13 @@ module.exports = {
     return out;
   },
   
-  buildPalette(currentAttrs, onSelect) {
+  allExcept(list) {
     // Make a copy of the array
+    console.log(this.groups);
     var groups = this.groups.slice(this.groups);
     
     // Filter out any attrs that are already in the target list
-    for (let a of currentAttrs) {
+    for (let a of list) {
       let parts = a.split(".");
       
       var i = 0;
@@ -43,7 +43,12 @@ module.exports = {
         i++;
       }
     }
-    
+    console.log(this.groups);
+    return groups;
+  },
+  
+  buildPalette(currentAttrs, onSelect) {
+    let groups = this.allExcept(currentAttrs);
     
     let $container = $("<div>", {class: "attr-select"});
     let $groups = $("<div>", {class: "groups"});
