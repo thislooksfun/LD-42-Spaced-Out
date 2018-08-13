@@ -2,6 +2,9 @@
 
 const utils = require("./util");
 
+const assetBasePath = "assets/??/";
+const ext = ".png";
+
 module.exports = {
   random(count = 5, list = null) {
     var out = [];
@@ -37,5 +40,12 @@ module.exports = {
     {name: "temperature", opts: [ "cold" , "moderate", "hot"    ]},
     {name: "trees",       opts: [ "none" , "some"               ]},
   ],
+  
+  buildElFrom(name) {
+    $("<img>", {
+      src: assetBasePath + name + ext,
+      class: "icon attribute",
+    });
+  },
   
 };
