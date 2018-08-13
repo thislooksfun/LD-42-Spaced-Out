@@ -1,8 +1,9 @@
 "use strict";
 
 const attributes = require("../lib/attributes");
-const lobby = require("../section/lobby");
 const bank = require("../section/bank");
+const lobby = require("../section/lobby");
+const score = require("../section/score");
 
 const maxPassengers = 5;
 
@@ -106,6 +107,7 @@ module.exports = class Person {
     
     // TODO: Handle fines and bonuses
     
+    score.save(this.passengers.length);
     
     this._pad.ship = null;
     this._redraw();
