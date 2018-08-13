@@ -2,6 +2,7 @@
 
 const attributes = require("../lib/attributes");
 const lobby = require("../section/lobby");
+const bank = require("../section/bank");
 
 const maxPassengers = 5;
 
@@ -100,6 +101,15 @@ module.exports = class Person {
   launch() {
     // TODO:
     console.log("Launching ship!", this.passengers);
+    
+    let sum = 0;
+    for (let p of this.passengers) {
+      sum += p.payout;
+    }
+    bank.earn(sum);
+    
+    // TODO: Handle fines and bonuses
+    
     this._pad.ship = null;
     this._redraw();
   }
