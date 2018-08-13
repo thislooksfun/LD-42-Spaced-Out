@@ -258,12 +258,10 @@ module.exports = class Person {
     this.$el.append($("<div>", { class: "fade down" }));
     this.$el.append($("<div>", { class: "fade up" }));
 
-    this.$launchBtn = $("<button>", { class: "launch", text: "Launch!" });
+    this.$launchBtn = $("<button>", { class: "launch", text: "Find Planet" });
     this.$launchBtn.click(this.launch.bind(this));
 
-    if (this.passengers.length == 0) {
-      this.$launchBtn.prop("disabled", true);
-    }
+    this.redrawLaunchBtn();
 
     this.$el.append(this.$launchBtn);
 
@@ -298,6 +296,10 @@ module.exports = class Person {
     }
 
     this.$attributes.append($addBtn);
+
+    if (this.$launchBtn != null) {
+      this.redrawLaunchBtn();
+    }
   }
 
   displayPalette() {
@@ -325,6 +327,21 @@ module.exports = class Person {
     }
   }
 
+  redrawLaunchBtn() {
+    if (this.attributes.length < maxAttributes) {
+      this.$launchBtn.text("Find Planet");
+      this.$launchBtn.removeAttr("disabled");
+    } else {
+      this.$launchBtn.text("Launch!");
+
+      if (this.passengers.length > 0) {
+        this.$launchBtn.removeAttr("disabled");
+      } else {
+        this.$launchBtn.attr("disabled", true);
+      }
+    }
+  }
+
   hasAttr(a) {
     for (let at of this.attributes) {
       if (at === a) {
@@ -334,12 +351,19 @@ module.exports = class Person {
     return false;
   }
 
+  findPlanet() {
+    let missing = maxAttributes - this.attributes.length;
+    let fromList = attributes.allExcept(this.attributes);
+    let rand = attributes.random(missing, fromList);
+    this.attributes = this.attributes.concat(rand);
+
+    this.redrawAttributes();
+  }
+
   launch() {
     if (this.attributes.length < maxAttributes) {
-      let missing = maxAttributes - this.attributes.length;
-      let fromList = attributes.allExcept(this.attributes);
-      let rand = attributes.random(missing, fromList);
-      this.attributes = this.attributes.concat(rand);
+      this.findPlanet();
+      return;
     }
 
     console.log("Launching ship!", this);
