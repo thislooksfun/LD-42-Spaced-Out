@@ -4,7 +4,7 @@ const prettyPrint = require("../lib/util").prettyPrint;
 const soe = require("./spaceOnEarth");
 
 // How many people you have to save to get the hardest difficulty
-const hardestDifficultyAt = 100;
+const hardestDifficultyAt = 50;
 
 var saved = -1;
 let $saved = $("#saved");

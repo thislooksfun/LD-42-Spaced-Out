@@ -1,6 +1,6 @@
 "use strict";
 
-const secondsBetweenDecrement = 2;
+const secondsBetweenDecrement = 3;
 const startingSpace = 100;
 
 var space = -1;

@@ -9,8 +9,8 @@ const maxAttributes = 5;
 
 const moneyScale = 5;
 const payoutMin  = 1000;
-const fineMin    = 250;
-const bonusMin   = 250;
+const fineMin    = 1500;
+const bonusMin   = 1000;
 
 
 function dragStart(e, id) {
@@ -51,8 +51,8 @@ module.exports = class Person {
     // rather than `payoutMin + (payoutMin * moneyScale)`
     let ms = moneyScale - 1;
     this.payout = payoutMin + util.rand(Math.floor(ms * payoutMin * this.needs.length   / maxAttributes));
-    this.fine   = payoutMin + util.rand(Math.floor(ms * fineMin   * this.needs.length   / maxAttributes));
-    this.bonus  = payoutMin + util.rand(Math.floor(ms * bonusMin  * this.desires.length / maxAttributes));
+    this.fine   = fineMin   + util.rand(Math.floor(ms * fineMin   * this.needs.length   / maxAttributes));
+    this.bonus  = bonusMin  + util.rand(Math.floor(ms * bonusMin  * this.desires.length / maxAttributes));
     
     
     this.$el = $("<div>", { class: "person" });
