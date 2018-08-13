@@ -1,6 +1,5 @@
 "use strict";
 
-const game = require("../game");
 const prettyPrint = require("../lib/util").prettyPrint;
 
 const startingMoney = 100000;
@@ -29,7 +28,7 @@ module.exports = {
     }
     money -= cost;
     if (money < 0) {
-      game.end("Out of money!");
+      require("../game").end("Out of money!");
     }
     redraw();
   },
