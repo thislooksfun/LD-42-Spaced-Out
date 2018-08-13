@@ -1,1 +1,1 @@
-var game_version = "1.0.0 (b17)"
+var game_version = "1.0.0 (b18)"
