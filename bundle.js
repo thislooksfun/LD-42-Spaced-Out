@@ -7,10 +7,10 @@ const diffScale = require("../section/score").diffScale;
 
 const maxAttributes = 5;
 
-const moneyScale = 10;
-const payoutMin = 500;
-const fineMin = 50;
-const bonusMin = 25;
+const moneyScale = 5;
+const payoutMin = 1000;
+const fineMin = 250;
+const bonusMin = 250;
 
 function dragStart(e, id) {
   $(this).addClass("dragging");
@@ -337,6 +337,13 @@ module.exports = class Person {
   }
 
   launch() {
+    if (this.attributes.length < maxAttributes) {
+      let missing = maxAttributes - this.attributes.length;
+      let fromList = attributes.allExcept(this.attributes);
+      let rand = attributes.random(missing, fromList);
+      this.attributes = this.attributes.concat(rand);
+    }
+
     console.log("Launching ship!", this);
 
     var bonuses = 0;
@@ -393,10 +400,23 @@ function start() {
   }
 }
 
+var $overlay = $("<div>", { class: "overlay" });
+var $overlayContainer = $("<div>", { class: "container" });
+$overlay.append($overlayContainer);
+
 module.exports = {
   begin() {
-    setup();
-    start();
+    $overlayContainer.empty();
+    $overlayContainer.append($("<h1>", { text: "Spaced Out" }));
+    let $startBtn = $("<button>", { text: "Start Game" });
+    $startBtn.click(function () {
+      $overlay.detach();
+      setup();
+      start();
+    });
+    $overlayContainer.append($startBtn);
+
+    $("body").append($overlay);
   },
 
   end(reason) {
@@ -407,6 +427,20 @@ module.exports = {
       }
     }
 
+    $overlayContainer.empty();
+    $overlayContainer.append($("<h1>", { text: "Game Over" }));
+    let score = require("./section/score").format();
+    $overlayContainer.append($("<span>", { text: "The Earth has run out of space." }));
+    $overlayContainer.append($("<span>", { text: "But hey, at least you saved " + score + "." }));
+    let $startBtn = $("<button>", { text: "Retry?" });
+    $startBtn.click(function () {
+      $overlay.detach();
+      setup();
+      start();
+    });
+    $overlayContainer.append($startBtn);
+
+    $("body").append($overlay);
     // TODO: Display end-of-game screen
   }
 };
@@ -420,12 +454,11 @@ const assetBasePath = "assets/attributes/icons/";
 const ext = ".png";
 
 module.exports = {
-  random(count = 5, list = null) {
+  random(count = 5, fromList = null) {
     var out = [];
-    if (list == null) {
-      // Make a copy of the array
-      list = this.groups.slice(this.groups);
-    }
+    let tmp = fromList || this.groups;
+    // Make a copy of the array
+    var list = tmp.slice();
 
     while (count > 0 && list.length > 0) {
       let index = utils.rand(list.length - 1);
@@ -440,12 +473,13 @@ module.exports = {
     return out;
   },
 
-  buildPalette(currentAttrs, onSelect) {
+  allExcept(list) {
     // Make a copy of the array
+    console.log(this.groups);
     var groups = this.groups.slice(this.groups);
 
     // Filter out any attrs that are already in the target list
-    for (let a of currentAttrs) {
+    for (let a of list) {
       let parts = a.split(".");
 
       var i = 0;
@@ -457,6 +491,12 @@ module.exports = {
         i++;
       }
     }
+    console.log(this.groups);
+    return groups;
+  },
+
+  buildPalette(currentAttrs, onSelect) {
+    let groups = this.allExcept(currentAttrs);
 
     let $container = $("<div>", { class: "attr-select" });
     let $groups = $("<div>", { class: "groups" });
@@ -594,16 +634,18 @@ const bank = require("./bank");
 // const buildTimeInSeconds = 5;
 
 const priceToBuildShip = 5000;
-const priceToBuyPad = 10000;
+const priceToBuyPad = 75000;
 
-let pad1 = { ship: null, bought: true, $el: $("#pad1"), $pad: $("#pad1 .pad") };
-let pad2 = { ship: null, bought: false, $el: $("#pad2"), $pad: $("#pad2 .pad") };
-let pad3 = { ship: null, bought: false, $el: $("#pad3"), $pad: $("#pad3 .pad") };
+let pad1;
+let pad2;
+let pad3;
 
 module.exports = {
 
   setup() {
-    // TODO: ?
+    pad1 = { ship: null, bought: true, $el: $("#pad1"), $pad: $("#pad1 .pad") };
+    pad2 = { ship: null, bought: false, $el: $("#pad2"), $pad: $("#pad2 .pad") };
+    pad3 = { ship: null, bought: false, $el: $("#pad3"), $pad: $("#pad3 .pad") };
   },
 
   start() {
@@ -688,7 +730,8 @@ let $lobby = $("#lobby .content");
 
 module.exports = {
   setup() {
-    // TODO
+    people = {};
+    $lobby.empty();
   },
 
   start() {
@@ -745,7 +788,11 @@ const hardestDifficultyAt = 100;
 var saved = -1;
 let $saved = $("#saved");
 function redraw() {
-  $saved.text(prettyPrint(saved) + " " + (saved === 1 ? "person" : "people"));
+  $saved.text(format());
+}
+
+function format() {
+  return prettyPrint(saved) + " " + (saved === 1 ? "person" : "people");
 }
 
 module.exports = {
@@ -754,6 +801,8 @@ module.exports = {
     saved = 0;
     redraw();
   },
+
+  format: format,
 
   save(count) {
     saved += count;
@@ -773,13 +822,14 @@ module.exports = {
 "use strict";
 
 const secondsBetweenDecrement = 2;
-var space = 100;
-// var space = 10;
+const startingSpace = 100;
+
+var space = -1;
 
 module.exports = {
 
   setup() {
-    // TODO
+    space = startingSpace;
   },
 
   start() {
