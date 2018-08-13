@@ -2,7 +2,7 @@
 
 const Person = require("../class/person");
 
-const newPersonInterval = 5;
+const newPersonInterval = 2.5;
 const startingPeople = 5;
 const maxPeople = 10;
 
